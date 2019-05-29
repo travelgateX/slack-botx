@@ -1,4 +1,4 @@
-[![PyPI](https://badge.fury.io/py/slackbot.svg)](https://pypi.python.org/pypi/slackbot) [![Build Status](https://secure.travis-ci.org/lins05/slackbot.svg?branch=master)](http://travis-ci.org/lins05/slackbot)
+[![Build Status](https://secure.travis-ci.org/lins05/slackbot.svg?branch=master)](http://travis-ci.org/lins05/slackbot)
 
 Bot for [TravelgateX Slack](https://travelgatex.slack.com) 
 
@@ -11,12 +11,13 @@ Bot for [TravelgateX Slack](https://travelgatex.slack.com)
 pip install -r requirements.txt
 ```
 
-## Environemnt
+## Environment
 Modify slackbot/config.ini or set environment:
 
+```
 export SLACK_API_TOKEN="xoxb-your-token"
 export SLACK_VERIFICATION_TOKEN="xoxv-your-token"
-
+```
 
 ### Schedule messages
 
@@ -40,6 +41,6 @@ docker run -d --name mycontainer -p 80:80 myimage
 ```
 
 
-#Runbook
+# Runbook
 - Create heroku app
 - 
