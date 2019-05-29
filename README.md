@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/lins05/slackbot.svg?branch=master)](http://travis-ci.org/lins05/slackbot)
+[![Build Status](https://travis-ci.org/travelgateX/slack-botx.svg?branch=master)](https://travis-ci.org/travelgateX/slack-botx)
 
 Bot for [TravelgateX Slack](https://travelgatex.slack.com) 
 
