@@ -1,4 +1,4 @@
-<p align="center">
+<p>
 <a href="https://travis-ci.org/travelgateX/slack-botx" target="_blank">
     <img src="https://travis-ci.org/travelgateX/slack-botx.svg?branch=master" alt="Build Status">
 </a>
