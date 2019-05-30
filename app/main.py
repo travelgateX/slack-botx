@@ -1,7 +1,7 @@
 import json
 import slack
 from config import Config
-from slashCommand import *
+from slash_command import *
 from fastapi import FastAPI
 
 
@@ -11,7 +11,7 @@ SLACK_VERIFICATION_TOKEN = Config.get_or_else('SLACK','SLACK_VERIFICATION_TOKEN'
 slack_client = slack.WebClient(SLACK_API_TOKEN)
 
 
-commander = Slash("Hey there! It works.")
+commander = SlashCommand("Hey there! It works.")
 
 #TODO: Add checks for all responses from slack api calls
 
