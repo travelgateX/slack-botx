@@ -6,5 +6,3 @@ python:
   - "3.8-dev"  # 3.8 development branch
 install:
   - pip install -r ./app/requirements.txt
-services:
-  - docker
