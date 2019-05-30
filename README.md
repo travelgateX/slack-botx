@@ -1,6 +1,15 @@
-[![Build Status](https://travis-ci.org/travelgateX/slack-botx.svg?branch=master)](https://travis-ci.org/travelgateX/slack-botx)
-[codecov](https://codecov.io/gh/travelgateX/slack-botx/badge.svg)](https://codecov.io/gh/travelgateX/slack-botx)
-[<img src="https://slack.travelgatex.com/badge.svg">](https://slack.travelgatex.com)
+<p align="center">
+<a href="https://travis-ci.org/travelgateX/slack-botx" target="_blank">
+    <img src="https://travis-ci.org/travelgateX/slack-botx.svg?branch=master" alt="Build Status">
+</a>
+<a href="https://codecov.io/gh/travelgateX/slack-botx" target="_blank">
+    <img src="https://codecov.io/gh/travelgateX/slack-botx/branch/master/graph/badge.svg" alt="Coverage">
+</a>
+<a href="https://slack.travelgatex.com" target="_blank">
+    <img src="https://slack.travelgatex.com/badge.svg" alt="Slack">
+</a>
+</p>
+
 
 Bot for [TravelgateX Slack](https://travelgatex.slack.com) 
 
