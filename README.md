@@ -10,14 +10,20 @@
 </a>
 </p>
 
-Bot for [TravelgateX Slack](https://travelgatex.slack.com) 
 
 ## Features
+Bot for [TravelgateX Slack](https://travelgatex.slack.com) written in Python.
+
+The key features are:
 
 * Based on slack [Events API](https://api.slack.com/events-api)
 * Powered by [FastAPI web framework](https://fastapi.tiangolo.com/)
 
-## Install requirements
+## Requirements
+
+Python 3.7+
+
+### Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -29,7 +35,6 @@ Modify app/config.ini or set environment variables:
 
 ```bash
 export SLACK_BOT_TOKEN="xoxb-your-token"
-export SLACK_VERIFICATION_TOKEN="xoxv-your-token"
 export SLACK_SIGNING_SECRET="your-signing-secret"
 ```
 
@@ -43,6 +48,12 @@ Start the server
 uvicorn app.main:app --reload
 ```
 
+## Tests
+
+```bash
+pytest
+```
+
 ### Docker
 
 Build the image and run the container
@@ -51,13 +62,6 @@ Build the image and run the container
 docker build -t myimage .
 docker run -d --name mycontainer -p 80:80 myimage
 ```
-
-## Test
-
-```bash
-pytest
-```
-
 
 ## Heroku
 

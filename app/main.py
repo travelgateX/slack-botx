@@ -14,7 +14,6 @@ from app.utils.config import Config
 
 
 SLACK_BOT_TOKEN = Config.get_or_else('SLACK','BOT_TOKEN',None)
-SLACK_VERIFICATION_TOKEN = Config.get_or_else('SLACK','VERIFICATION_TOKEN',None)
 SLACK_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
 
 logger = logging.getLogger(__name__)
@@ -35,7 +34,7 @@ async def validate_signature(request: Request):
       logger.error("Bad X-Slack-Signature")
       raise HTTPException( status_code=403, detail="Bad X-Slack-Signature")
      
-   if (not await validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=await request.body(), timestamp=req_timestamp, signature=req_signature)):
+   if (not validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=await request.body(), timestamp=req_timestamp, signature=req_signature)):
       logger.error("Bad request signature")
       raise HTTPException( status_code=403, detail="Bad request signature")
     
