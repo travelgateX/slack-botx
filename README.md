@@ -10,47 +10,55 @@
 </a>
 </p>
 
-
 Bot for [TravelgateX Slack](https://travelgatex.slack.com) 
 
 ## Features
 
-* Based on slack [Real Time Messaging API](https://api.slack.com/rtm)
+* Based on slack [Events API](https://api.slack.com/events-api)
+* Powered by [FastAPI web framework](https://fastapi.tiangolo.com/)
 
 ## Install requirements
-```
+
+```bash
 pip install -r requirements.txt
 ```
 
 ## Environment
-Modify slackbot/config.ini or set environment:
 
-```
-export SLACK_API_TOKEN="xoxb-your-token"
+Modify app/config.ini or set environment variables:
+
+```bash
+export SLACK_BOT_TOKEN="xoxb-your-token"
 export SLACK_VERIFICATION_TOKEN="xoxv-your-token"
+export SLACK_SIGNING_SECRET="your-signing-secret"
 ```
 
-### Schedule messages
+## Run
 
-```
+### Local
 
-python scheduled.py
-
-```
-
-### Slash Commands
 Start the server
-```
-uvicorn main:app --reload
+
+```bash
+uvicorn app.main:app --reload
 ```
 
 ### Docker
+
 Build the image and run the container
-```
+
+```bash
 docker build -t myimage .
 docker run -d --name mycontainer -p 80:80 myimage
 ```
 
-# Heroku Docker build & run
-- Create heroku app
-- 
+## Test
+
+```bash
+pytest
+```
+
+
+## Heroku
+
+Heroku [deployment url](https://slack-botx.herokuapp.com/)

@@ -1,3 +1,3 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
-COPY ./app /appdir
+COPY ./app /app/app

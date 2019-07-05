@@ -1,49 +1,48 @@
 import json
-import slack
-from config import Config
-from slash_command import *
-from fastapi import FastAPI
+import logging
+
+from time import time
+
+from fastapi import Depends, FastAPI, Header, HTTPException
+
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+
+from app.routers import events
+from app.utils.slack import validate_slack_signature
+from app.utils.config import Config
 
 
-Config.init_config()
-SLACK_API_TOKEN = Config.get_or_else('SLACK','SLACK_API_TOKEN',None)
-SLACK_VERIFICATION_TOKEN = Config.get_or_else('SLACK','SLACK_VERIFICATION_TOKEN',None)
-slack_client = slack.WebClient(SLACK_API_TOKEN)
+SLACK_BOT_TOKEN = Config.get_or_else('SLACK','BOT_TOKEN',None)
+SLACK_VERIFICATION_TOKEN = Config.get_or_else('SLACK','VERIFICATION_TOKEN',None)
+SLACK_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
 
+logger = logging.getLogger(__name__)
+logger.info("main starts")
 
-commander = SlashCommand("Hey there! It works.")
+async def validate_signature(request: Request):
+   logger.info("Validating signature...")
 
-#TODO: Add checks for all responses from slack api calls
+   # Each request comes with request timestamp and request signature
+   # emit an error if the timestamp is out of range
+   req_timestamp = request.headers.get('X-Slack-Request-Timestamp')
+   if ( (not req_timestamp) or (abs(time() - int(req_timestamp)) > 60 * 5) ):
+      logger.error("Bad X-Slack-Request-Timestamp")
+      raise HTTPException( status_code=403, detail="Request header X-Slack-Request-Timestamp out of range")
 
-def verify_slack_token(request_token):
-    if SLACK_VERIFICATION_TOKEN != request_token:
-        print("Error: invalid verification token!")
-        print("Received {} but was expecting {}".format(request_token, SLACK_VERIFICATION_TOKEN))
-        return {"Request contains invalid Slack verification token", 403}
-
+   req_signature = request.headers.get('X-Slack-Signature')
+   if (not req_signature):
+      logger.error("Bad X-Slack-Signature")
+      raise HTTPException( status_code=403, detail="Bad X-Slack-Signature")
+     
+   if (not await validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=await request.body(), timestamp=req_timestamp, signature=req_signature)):
+      logger.error("Bad request signature")
+      raise HTTPException( status_code=403, detail="Bad request signature")
+    
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-@app.post("/slack/test")
-async def command(info):
-   # # get uid of the user
-  # im_id = slack_client.api_call(
-  #   "im.open",
-  #   user=info["user_id"]
-  # )["channel"]["id"]
-
-  # # send user a response via DM
-  # ownerMsg = slack_client.api_call(
-  #   "chat.postMessage",
-  #   channel=im_id,
-  #   text=commander.getMessage()
-
-  # send channel a response
-  channelMsg = slack_client.chat_postMessage(
-    channel="#" + info["channel_name"],
-    text=commander.getMessage )
-
-  return {"message": "Hello World"}
+app.include_router(
+   events.router,
+   tags=["events"],
+   dependencies=[Depends(validate_signature)],
+)

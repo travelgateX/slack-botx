@@ -1,5 +1,7 @@
 import os
 import configparser
+import logging
+from logging.config import fileConfig
 
 
 class Config:
@@ -18,9 +20,10 @@ class Config:
 
 
     @staticmethod
-    def init_config(file='config.ini'):
+    def init_config(file='app/config.ini'):
         Config.config.read(file)
-       
+        fileConfig(file)   # init logger
+           
     @staticmethod
     def get_or_else(section, option, default_value):
         if Config.config.has_option(section, option):

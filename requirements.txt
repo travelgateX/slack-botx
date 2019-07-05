@@ -1,4 +1,4 @@
-schedule==0.6.0
-slackclient==2.0.1
-fastapi[all]==0.26.0
+slackclient==2.1.0
+fastapi[all]==0.31.0
 pytest
+certifi
