@@ -69,4 +69,4 @@ Heroku [deployment url](https://slack-botx.herokuapp.com/)
 
 ## Usage
 
-- Slack Events: https://[server]/slack/events
+- Post [Slack Events](https://slack-botx.herokuapp.com/slack/events)
