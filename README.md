@@ -66,3 +66,7 @@ docker run -d --name mycontainer -p 80:80 myimage
 ## Heroku
 
 Heroku [deployment url](https://slack-botx.herokuapp.com/)
+
+## Usage
+
+- Slack Events: https://[server]/slack/events

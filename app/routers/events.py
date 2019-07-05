@@ -24,7 +24,7 @@ router = APIRouter()
 @router.post("/slack/events", tags=["events"])
 async def post_event(event:SlackEventModelIn):
    if event.type == "url_verification": 
-         return url_verification(event)
+      return url_verification(event)
       
    raise HTTPException( status_code=405, detail="Event type not allowed")
 
