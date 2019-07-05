@@ -33,10 +33,12 @@ async def validate_signature(request: Request):
    if (not req_signature):
       logger.error("Bad X-Slack-Signature")
       raise HTTPException( status_code=403, detail="Bad X-Slack-Signature")
-     
-   if (not validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=await request.body(), timestamp=req_timestamp, signature=req_signature)):
-      logger.error("Bad request signature")
-      raise HTTPException( status_code=403, detail="Bad request signature")
+
+   data_str = await request.body()
+   logger.info(f"validate signature data: [{data_str}]")
+   #if (not validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=data_str, timestamp=req_timestamp, signature=req_signature)):
+   #   logger.error("Bad request signature")
+   #   raise HTTPException( status_code=403, detail="Bad request signature")
     
 app = FastAPI()
 

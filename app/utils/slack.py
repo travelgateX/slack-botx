@@ -2,8 +2,6 @@ import hashlib
 import hmac
 import logging
 
-logger = logging.getLogger(__name__)
-
 
 """
     Slack creates a unique string for your app and shares it with you. Verify
@@ -30,9 +28,7 @@ def create_slack_signature(secret:str, timestamp, data)->str:
         str.encode(secret),
         req, hashlib.sha256
     ).hexdigest()
-    logger.info(f"create data {data}")
-    logger.info(f"create request_signature {request_signature}")
-
+   
     return request_signature
 
 def validate_slack_signature(signing_secret: str, data: str, timestamp: str, signature: str) -> bool:
@@ -40,11 +36,6 @@ def validate_slack_signature(signing_secret: str, data: str, timestamp: str, sig
     encoded_secret = str.encode(signing_secret)
     request_hash = hmac.new(encoded_secret, format_req, hashlib.sha256).hexdigest()
     calculated_signature = f"v0={request_hash}"
-    
-    logger.info(f"validate data {data}")
-    logger.info(f"validate calculated_signature {calculated_signature}")
-    logger.info(f"validate signature {signature}")
-    
     
     return hmac.compare_digest(calculated_signature, signature)
 

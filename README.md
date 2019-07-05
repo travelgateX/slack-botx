@@ -12,7 +12,7 @@
 
 
 ## Features
-Bot for [TravelgateX Slack](https://travelgatex.slack.com) written in Python.
+[TravelgateX Slack](https://travelgatex.slack.com) bot written in Python.
 
 The key features are:
 
