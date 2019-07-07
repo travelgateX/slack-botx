@@ -22,7 +22,7 @@ import logging
         True if signatures matches
 """
    
-def create_slack_signature(secret:str, timestamp, data)->str:
+def create_signature(secret:str, timestamp, data)->str:
     req = str.encode('v0:' + str(timestamp) + ':') + str.encode(data)
     request_signature= 'v0='+hmac.new(
         str.encode(secret),
@@ -31,7 +31,7 @@ def create_slack_signature(secret:str, timestamp, data)->str:
    
     return request_signature
 
-def validate_slack_signature(signing_secret: str, data: str, timestamp: str, signature: str) -> bool:
+def validate_signature(signing_secret: str, data: str, timestamp: str, signature: str) -> bool:
     format_req = str.encode(f"v0:{timestamp}:{data}")
     encoded_secret = str.encode(signing_secret)
     request_hash = hmac.new(encoded_secret, format_req, hashlib.sha256).hexdigest()

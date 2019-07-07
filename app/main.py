@@ -9,8 +9,8 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from app.routers import events
-from app.utils.slack import validate_slack_signature
-from app.utils.config import Config
+from app.common.slack_util import validate_signature
+from app.common.config import Config
 
 
 SLACK_BOT_TOKEN = Config.get_or_else('SLACK','BOT_TOKEN',None)
@@ -19,7 +19,7 @@ SLACK_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
 logger = logging.getLogger(__name__)
 logger.info("main starts")
 
-async def validate_signature(request: Request):
+async def validate_slack_signature(request: Request):
    logger.info("Validating signature...")
 
    # Each request comes with request timestamp and request signature
@@ -36,7 +36,7 @@ async def validate_signature(request: Request):
 
    body = await request.body()
    data_str = body.decode()
-   signature_ok = validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=data_str, timestamp=req_timestamp, signature=req_signature) 
+   signature_ok = validate_signature( signing_secret=SLACK_SIGNING_SECRET, data=data_str, timestamp=req_timestamp, signature=req_signature) 
    logger.info(f"validate signature data: [{data_str}], signature_ok:[{signature_ok}]")
    if (not signature_ok):
       logger.error("Bad request signature")
@@ -47,5 +47,5 @@ app = FastAPI()
 app.include_router(
    events.router,
    tags=["events"],
-   dependencies=[Depends(validate_signature)],
+   dependencies=[Depends(validate_slack_signature)],
 )

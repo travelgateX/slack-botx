@@ -10,26 +10,22 @@
 </a>
 </p>
 
+[TravelgateX Slack](https://travelgatex.slack.com) bot written in Python:
+
+* Based on [Slack Events](https://api.slack.com/events-api)
+* Powered by [FastAPI web framework](https://fastapi.tiangolo.com/)
+* Using standard [Python 3.7+ type hints](https://docs.python.org/3/library/typing.html)
+* Event background execution.
 
 ## Features
-[TravelgateX Slack](https://travelgatex.slack.com) bot written in Python.
 
-The key features are:
+* [x] Welcome and onboard new members providing support resources
+* [ ] Interactive commands wrapping [TravelgateX GraphQL API](https://api.travelgatex.com)
+* [ ] User answers to __very simple__ support questions
 
-* Based on slack [Events API](https://api.slack.com/events-api)
-* Powered by [FastAPI web framework](https://fastapi.tiangolo.com/)
+## Development
 
-## Requirements
-
-Python 3.7+
-
-### Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-## Environment
+### Environment
 
 Modify app/config.ini or set environment variables:
 
@@ -38,20 +34,20 @@ export SLACK_BOT_TOKEN="xoxb-your-token"
 export SLACK_SIGNING_SECRET="your-signing-secret"
 ```
 
+### Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Run
 
 ### Local
 
-Start the server
+Run the server with:
 
 ```bash
 uvicorn app.main:app --reload
-```
-
-## Tests
-
-```bash
-pytest
 ```
 
 ### Docker
@@ -63,10 +59,15 @@ docker build -t myimage .
 docker run -d --name mycontainer -p 80:80 myimage
 ```
 
-## Heroku
+## Tests
+
+```bash
+pytest
+```
+
+## Cloud deployment
+
+### Heroku
 
 Heroku [deployment url](https://slack-botx.herokuapp.com/)
 
-## Usage
-
-- Post [Slack Events](https://slack-botx.herokuapp.com/slack/events)
