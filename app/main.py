@@ -13,11 +13,12 @@ from app.common.slack_util import validate_signature
 from app.common.config import Config
 
 
-SLACK_BOT_TOKEN = Config.get_or_else('SLACK','BOT_TOKEN',None)
+Config.init_config()
+logger = logging.getLogger(__name__)
+logger.info("main start")
+
 SLACK_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
 
-logger = logging.getLogger(__name__)
-logger.info("main starts")
 
 async def validate_slack_signature(request: Request):
    logger.info("Validating signature...")

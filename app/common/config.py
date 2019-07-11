@@ -1,7 +1,7 @@
 import os
 import configparser
 import logging
-from logging.config import fileConfig
+import logging.config
 
 
 class Config:
@@ -22,7 +22,7 @@ class Config:
     @staticmethod
     def init_config(file='app/config.ini'):
         Config.config.read(file)
-        fileConfig(file)   # init logger
+        logging.config.fileConfig(file, disable_existing_loggers=False)   # init logger
            
     @staticmethod
     def get_or_else(section, option, default_value):

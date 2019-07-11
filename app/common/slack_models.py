@@ -21,4 +21,4 @@ class ChallengeModelOut(BaseModel):
    challenge:str
 
 class EventModelOut(BaseModel):
-   message:str = "Event processed"
+   message:str = "Background task added"
