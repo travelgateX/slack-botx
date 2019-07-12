@@ -43,7 +43,8 @@ class Command:
         try:
             response = await self.web_client.chat_postMessage(
                     channel=channel, 
-                    blocks = blocks
+                    blocks = blocks,
+                    as_user = True
                     )
             logger.info(f"response {response}")
         except slack.errors.SlackApiError as err:
