@@ -24,9 +24,12 @@ def _send_data( data ):
     return response
 
 def test_team_join():
-    data= {"token": "does_not_matter", 
-           "type": "team_join",
+    data= {"token": "does_not_matter",
+           "team_id":"T9R353D0A",
+           "api_app_id":"AJXG7EL20",
+           "type": "event_callback", 
            "event": {
+              "type": "team_join",
               "user": {
                 "id":"test",
                 "name":"user_name",

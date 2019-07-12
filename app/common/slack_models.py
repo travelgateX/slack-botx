@@ -7,6 +7,7 @@ class UserModel(BaseModel):
    real_name: str
 
 class EventModel(BaseModel):
+   type: str = Schema(...,title="Indicates which kind of event dispatch this is, usually `event_callback`.")
    user: UserModel = None
 
 class EventModelIn(BaseModel):

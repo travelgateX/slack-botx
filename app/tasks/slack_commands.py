@@ -14,5 +14,5 @@ class Macro:
 
 # Create based on class name:
 def factory(event:EventModelIn) -> Command:
-    if event.type == "team_join": return TeamJoin(event)
+    if event.event.type == "team_join": return TeamJoin(event)
     else: return NonImplementedCommand(event)
