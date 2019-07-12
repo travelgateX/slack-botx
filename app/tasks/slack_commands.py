@@ -8,9 +8,9 @@ class Macro:
         self.commands = []
     def add(self, command:Command):
         self.commands.append(command)
-    def run(self):
+    async def run(self):
         for c in self.commands:
-            c.execute()
+            await c.execute()
 
 # Create based on class name:
 def factory(event:EventModelIn) -> Command:

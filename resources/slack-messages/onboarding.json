@@ -1,0 +1,30 @@
+[
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "Hi ${user_real_name} :wave:"
+		}
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "Welcome to the TravelgateX Community, it's great to have you with us! \n Please consider our following community guidelines. Use highlights wisely and keep conversations organized into threads."
+		}
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "• Slack #platform: Open space to discuss our platform, products and  Information on Releases, updates, planned and unplanned outages affecting the platform. Please do not use this channel for raising issues or reporting bugs. We have a Jira Service Desk for that\n • The Global marketplace for the travel trade: https://www.travelgatex.com/\n • The best place for broader discussions or questions about code: https://docs.travelgatex.com \n • Want to know how to join our platform? Reach out to our Sales Team at info@xmltravelgate.com \n • Careers. See something that interests you? Apply here: https://xtg.bamboohr.com/jobs/ \n • Blog TravelgateX: https://blog.travelgatex.com "
+		}
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "Let us know if you have any questions! \n Thanks for making our community as awesome as it is."
+		}
+	}
+]

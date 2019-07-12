@@ -14,7 +14,7 @@ router = APIRouter()
 
 @router.post("/slack/events", tags=["events"])
 async def post_event(event:EventModelIn, background_tasks: BackgroundTasks):
-   logger.info(f"Executing event:[{event}]")
+   logger.info(f"POST event:[{event.type}]")
    if event.type == "url_verification": 
       return ChallengeModelOut(**event.dict())
    else:  #Other events are executed in background 

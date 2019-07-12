@@ -28,9 +28,9 @@ def test_team_join():
            "type": "team_join",
            "event": {
               "user": {
-                "id":"u1",
+                "id":"test",
                 "name":"user_name",
-                "real_name": "user_real_name" 
+                "real_name": "Oscar Test" 
               }
            }
          }
