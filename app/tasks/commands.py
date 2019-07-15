@@ -7,6 +7,7 @@ import sys
 import json
 from string import Template
 from typing import (List)
+from pydantic import BaseModel
 from app.common.slack_models import EventModelIn
 from app.common.config import Config
 
@@ -18,7 +19,7 @@ class Command:
 
     web_client = slack.WebClient(token=Config.get_or_else('SLACK', 'BOT_TOKEN',None), run_async=True)
 
-    def __init__(self,event:EventModelIn):
+    def __init__(self,event:BaseModel):
         self.event_in=event
 
     async def execute(self): pass
@@ -39,18 +40,17 @@ class Command:
                 blocks.append( block ) 
         return blocks
     
-    async def send_message(self, channel:str, blocks:List[str]):
+    async def send_message(self, channel:str, as_user:bool, blocks:List[str]):
         try:
             response = await self.web_client.chat_postMessage(
                     channel=channel, 
                     blocks = blocks,
-                    as_user = True
+                    as_user = as_user
                     )
             logger.info(f"response {response}")
         except slack.errors.SlackApiError as err:
              logger.error(f"Exception SlackApiError [{err}]")
              raise
-
 
     def _get_task_block(self,text, information):
         return [
@@ -62,17 +62,27 @@ class Command:
 class TeamJoin(Command):
     async def execute(self):
         logger.info(f"TeamJoin.execute[{self.event_in}]")
-        
+    
         # Get the onboarding message payload
         blocks = await self.get_message_payload( ["onboarding"], {'user_real_name': self.event_in.event.user.real_name} )
 
         # Post the onboarding message in Slack member channel
-        response = await self.send_message( channel=self.event_in.event.user.id, blocks=blocks)
+        response = await self.send_message( channel=self.event_in.event.user.id,  as_user=True, blocks=blocks)
         
         logger.info(f"postMessageResponse[{response}]")
 
+class ChangelogNotify(Command):
+    async def execute(self):
+        logger.info(f"ChangelogNotify.execute[{self.event_in}]")
+         # Get the onboarding message payload
+        blocks = await self.get_message_payload( ["changelog"], {'app': self.event_in.femtoo_callback_label, 'url': self.event_in.femtoo_callback_url} )
 
+        # Post the onboarding message in Slack member channel
+        response = await self.send_message( channel="test",  as_user=True, blocks=blocks)
+        
+        logger.info(f"postMessageResponse[{response}]")
+       
 class NonImplementedCommand(Command):
     async def execute(self):
-       logger.warn(f"Command non implemented {self.event_in}")
+       logger.warning(f"Command non implemented {self.event_in}")
 

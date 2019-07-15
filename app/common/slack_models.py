@@ -20,6 +20,3 @@ class EventModelIn(BaseModel):
 
 class ChallengeModelOut(BaseModel):
    challenge:str
-
-class EventModelOut(BaseModel):
-   message:str = "Background task added"

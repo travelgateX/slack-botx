@@ -1,5 +1,5 @@
-from app.common.slack_models import EventModelIn
-from app.tasks.commands import (Command, TeamJoin, NonImplementedCommand)
+from app.common.slack_models import BaseModel
+from app.tasks.commands import (Command, TeamJoin, ChangelogNotify, NonImplementedCommand)
 
 # Command pattern: https://python-3-patterns-idioms-test.readthedocs.io/en/latest/FunctionObjects.html
 # An object that holds commands:
@@ -13,6 +13,7 @@ class Macro:
             await c.execute()
 
 # Create based on class name:
-def factory(event:EventModelIn) -> Command:
-    if event.event.type == "team_join": return TeamJoin(event)
-    else: return NonImplementedCommand(event)
+def factory(callback_type:str, data:BaseModel) -> Command:
+    if callback_type == "team_join": return TeamJoin(data)
+    if callback_type == "onwebchange_callback": return ChangelogNotify(data)
+    else: return NonImplementedCommand(data)

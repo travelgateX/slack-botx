@@ -1,0 +1,16 @@
+[
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "Hey @channel, there's a new ${app} release notes."
+		}
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "You can read the full release notes at ${url}\n Let us know if you have any questions, we're looking forward to your feedback :raised_hands:"
+		}
+	}
+]
