@@ -21,7 +21,7 @@
 ## Features
 
 * [x] Welcome and onboard new members providing support resources
-* [x] Advise on changelog updates being monitored by OnWebChange
+* [x] Advise on changelog updates
 * [ ] Interactive commands wrapping [TravelgateX GraphQL API](https://api.travelgatex.com)
 * [ ] User answers to __very simple__ support questions
 

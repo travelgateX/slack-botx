@@ -3,7 +3,7 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "Hey @channel, there's a new ${app} release notes."
+			"text": "Hey @channel, there's a new ${app} release."
 		}
 	},
 	{

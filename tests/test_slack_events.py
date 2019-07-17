@@ -23,7 +23,7 @@ def _send_data( data ):
     print(f"response:[{response}], content:[{response.content}]")
     return response
 
-def test_team_join():
+def test_team_join(mock_env_slack):
     data= {"token": "does_not_matter",
            "team_id":"T9R353D0A",
            "api_app_id":"AJXG7EL20",
@@ -41,7 +41,7 @@ def test_team_join():
     assert response.status_code == 200
     
 
-def test_url_verification():
+def test_url_verification(mock_env_slack):
     data= {"token": "does_not_matter", 
            "challenge": "3eZbrw1aBm2rZgRNFdxV2595E9CY3gmdALWMmHkvFXO7tYXAYM8P", 
            "type": "url_verification"

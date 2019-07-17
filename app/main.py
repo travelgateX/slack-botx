@@ -20,12 +20,13 @@ logger = logging.getLogger(__name__)
 logger.info("main start")
 
 SLACK_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
-GITHUB_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
 
 async def log_request(request: Request):
+   for header in request.headers:
+      logger.debug(f"Request header:[{header}]:[{request.headers[header]}]")   
    body = await request.body()
-   logger.info(f"Request:[{body}]")
-   
+   logger.debug(f"Request body:[{body}]")
+ 
 async def is_valid_slack_signature(request: Request):
    logger.info("Validating slack signature...")
 
@@ -44,12 +45,11 @@ async def is_valid_slack_signature(request: Request):
    body = await request.body()
    data_str = body.decode()
    signature_ok = validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=data_str, timestamp=req_timestamp, signature=req_signature) 
-   logger.info(f"validate signature data: [{data_str}], signature_ok:[{signature_ok}]")
+   logger.debug(f"validate signature data: [{data_str}], signature_ok:[{signature_ok}]")
    if (not signature_ok):
       logger.error("Bad request signature")
       raise HTTPException( status_code=403, detail="Bad request signature")
     
-
 
 app = FastAPI()
 
@@ -61,6 +61,6 @@ app.include_router(
 
 app.include_router(
    onwebchange_webhooks.router,
-   tags=["onwebchange","webhooks"],
+   tags=["onwebchange","webhook"],
    dependencies=[Depends(log_request)],
 )

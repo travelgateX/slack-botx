@@ -6,7 +6,7 @@ import logging.config
 
 class Config:
     """ Get config from config file or environment variables.
-    The priority order of config is: Config file > Environment > default_value.
+    The priority order of config is: Environment > Config file > default_value.
     The env var is composed by: [SECTION]_[OPTION]
     For example:
     get_or_else('smtp', 'BIND_ADDRESS', '127.0.0.1')
@@ -17,8 +17,6 @@ class Config:
     BOOLEAN_STATES = {'1': True, 'yes': True, 'true': True, 'on': True,
                       '0': False, 'no': False, 'false': False, 'off': False}
 
-
-
     @staticmethod
     def init_config(file='app/config.ini'):
         Config.config.read(file)
@@ -26,40 +24,31 @@ class Config:
            
     @staticmethod
     def get_or_else(section, option, default_value):
-        if Config.config.has_option(section, option):
-            return Config.config.get(section, option,
-                                     fallback=default_value)
-        else:
-            return os.environ.get('_'.join([section.upper(), option]),
-                                  default_value)
+        ret = os.environ.get('_'.join([section.upper(), option]))
+        if ret is None:
+            ret = Config.config.get(section, option, fallback=default_value)
+        return ret    
 
     @staticmethod
     def getint_or_else(section, option, default_value):
-        if Config.config.has_option(section, option):
-            return Config.config.getint(section, option,
-                                        fallback=default_value)
-        else:
-            return Config._get_conv_env_or_else(section, option,
-                                                int, default_value)
+        ret = Config._get_conv_env_or_else(section, option,int,None)
+        if ret is None:
+            ret = Config.config.getint(section, option,fallback=default_value)
+        return ret
 
     @staticmethod
     def getfloat_or_else(section, option, default_value):
-        if Config.config.has_option(section, option):
-            return Config.config.getfloat(section, option,
-                                          fallback=default_value)
-        else:
-            return Config._get_conv_env_or_else(section, option,
-                                                float, default_value)
-
+        ret = Config._get_conv_env_or_else(section, option,float, None)
+        if ret is None:
+            ret = Config.config.getfloat(section, option,fallback=default_value)
+        return ret
+        
     @staticmethod
     def getboolean_or_else(section, option, default_value):
-        if Config.config.has_option(section, option):
-            return Config.config.getboolean(section, option,
-                                            fallback=default_value)
-        else:
-            return Config._get_conv_env_or_else(section, option,
-                                                Config._convert_to_boolean,
-                                                default_value)
+        ret = Config._get_conv_env_or_else(section, option,Config._convert_to_boolean, None)
+        if ret is None:
+            ret = Config.config.getboolean(section, option,fallback=default_value)
+        return ret
 
     @staticmethod
     def _get_conv_env_or_else(section, option, conv, default_value):
