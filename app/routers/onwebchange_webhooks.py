@@ -11,9 +11,11 @@ logger = logging.getLogger(__name__)
 logger.info("OnWebChange webhooks start")
 
 router = APIRouter()
-
+              
 @router.post("/onwebchange/webhook", tags=["onwebchange", "webhook"])
-async def post_event(callback:CallbackPOSTModelIn, background_tasks: BackgroundTasks):
+#async def post_event(callback:CallbackPOSTModelIn, background_tasks: BackgroundTasks):
+async def post_event(background_tasks: BackgroundTasks):
+   callback = CallbackPOSTModelIn 
    logger.info(f"OnWebChange webhook:[{callback}]")
    macro = Macro()
    macro.add(  factory("onwebchange_callback", callback) )

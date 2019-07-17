@@ -18,7 +18,7 @@ logger.info("commands start")
 
 class Command:
     SLACK_CHANNEL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ANNOUNCEMENTS',None)
-    logger.info(f"Channel announcements {SLACK_CHANNEL_ANNOUNCEMENTS}")
+    logger.info(f"Channel announcements [{SLACK_CHANNEL_ANNOUNCEMENTS}]")
     web_client = slack.WebClient(token=Config.get_or_else('SLACK', 'BOT_TOKEN',None), run_async=True)
 
     def __init__(self,event:BaseModel):
