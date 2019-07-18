@@ -62,5 +62,5 @@ app.include_router(
 app.include_router(
    onwebchange_webhooks.router,
    tags=["onwebchange","webhook"],
-   dependencies=[Depends(log_request)],
+   dependencies=[],
 )

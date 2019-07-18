@@ -17,8 +17,10 @@ logger = logging.getLogger(__name__)
 logger.info("commands start")
 
 class Command:
-    SLACK_CHANNEL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ANNOUNCEMENTS',None)
-    logger.info(f"Channel announcements [{SLACK_CHANNEL_ANNOUNCEMENTS}]")
+    CHANNEL_TGX_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_TGX_ANNOUNCEMENTS',None)
+    CHANNEL_ALL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ALL_ANNOUNCEMENTS',None)
+    logger.info(f"Channel announcements TGX[{CHANNEL_TGX_ANNOUNCEMENTS}], ALL [{CHANNEL_ALL_ANNOUNCEMENTS}]")
+    
     web_client = slack.WebClient(token=Config.get_or_else('SLACK', 'BOT_TOKEN',None), run_async=True)
 
     def __init__(self,event:BaseModel):
@@ -83,7 +85,7 @@ class ChangelogNotify(Command):
             # Get the onboarding message payload
             blocks = await self.get_message_payload( ["changelog"], {'app': self.event_in.femtoo_callback_label, 'url': self.event_in.femtoo_callback_url} )
             # Post the onboarding message in Slack member channel
-            response = await self.send_message( channel=self.SLACK_CHANNEL_ANNOUNCEMENTS, as_user=True, blocks=blocks)
+            response = await self.send_message( channel=self.CHANNEL_TGX_ANNOUNCEMENTS, as_user=True, blocks=blocks)
             logger.info(f"ChangelogNotify OK[{response}]")
         else:
             logger.info(f"ChangelogNotify not changes for today [{response}]")
