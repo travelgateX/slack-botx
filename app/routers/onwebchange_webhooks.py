@@ -1,4 +1,5 @@
 import logging
+import urllib.parse
 from fastapi import BackgroundTasks,APIRouter,HTTPException,Form
 from pydantic import BaseModel,Schema
 from app.common.models import EventModelOut
@@ -14,7 +15,7 @@ router = APIRouter()
        
 @router.post("/onwebchange/webhook", tags=["onwebchange", "webhook"])
 async def post_event(*, femtoo_callback_url: str = Form(...), femtoo_callback_data: str = Form(...), femtoo_callback_label: str = Form(...),background_tasks: BackgroundTasks):
-   callback = CallbackPOSTModelIn( femtoo_callback_url=femtoo_callback_url,femtoo_callback_data=femtoo_callback_data,femtoo_callback_label=femtoo_callback_label) 
+   callback = CallbackPOSTModelIn( femtoo_callback_url=urllib.parse.unquote(femtoo_callback_url),femtoo_callback_data=urllib.parse.unquote(femtoo_callback_data),femtoo_callback_label=urllib.parse.unquote(femtoo_callback_label)) 
    logger.info(f"OnWebChange webhook:[{callback}]")
    macro = Macro()
    macro.add(  factory("onwebchange_callback", callback) )
