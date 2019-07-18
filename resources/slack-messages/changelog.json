@@ -3,14 +3,14 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "Hey @channel, there's a new ${app} release."
+			"text": "Hey @channel, there's a new *${app}* release."
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "You can read the full release notes at ${url}\n Let us know if you have any questions, we're looking forward to your feedback :raised_hands:"
+			"text": "You can read the full release notes *<${url}|here>*. \nLet us know if you have any questions, we're looking forward to your feedback :raised_hands:"
 		}
 	}
 ]
