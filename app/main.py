@@ -61,7 +61,7 @@ app.include_router(
 app.include_router(
    slack_commands.router,
    tags=["slack","commands"],
-   dependencies=[],
+   dependencies=[Depends(log_request)],
 )
 
 app.include_router(
