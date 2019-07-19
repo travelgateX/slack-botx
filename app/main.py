@@ -10,7 +10,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from app.routers import (slack_events, onwebchange_webhooks)
+from app.routers import (slack_events, onwebchange_webhooks,slack_commands)
 from app.common.util import validate_slack_signature, validate_github_signature
 from app.common.config import Config
 
@@ -59,9 +59,9 @@ app.include_router(
 )
 
 app.include_router(
-   slack_events.router,
+   slack_commands.router,
    tags=["slack","commands"],
-   dependencies=[Depends(is_valid_slack_signature)],
+   dependencies=[],
 )
 
 app.include_router(
