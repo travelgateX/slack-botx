@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel,Schema
 
 #https://api.slack.com/types/event 
@@ -5,6 +6,29 @@ class UserModel(BaseModel):
    id: str
    name: str
    real_name: str
+
+
+class CommandModelIn(BaseModel):
+    team_id: str
+    team_domain: str 
+    enterprise_id: str
+    enterprise_name: str
+    channel_id: str
+    channel_name: str
+    user_id: str
+    user_name: str
+    command: str
+    text: str
+    response_url: str
+    trigger_id: str
+
+class AttachmentsModel(BaseModel):
+   text: List[str]
+
+class CommandModelOut(BaseModel):
+    response_type: str
+    text: str
+    attachments: AttachmentsModel  
 
 class EventModel(BaseModel):
    type: str = Schema(...,title="Indicates which kind of event dispatch this is, usually `event_callback`.")

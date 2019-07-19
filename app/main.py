@@ -19,8 +19,6 @@ Config.init_config()
 logger = logging.getLogger(__name__)
 logger.info("main start")
 
-SLACK_SIGNING_SECRET = Config.get_or_else('SLACK', 'SIGNING_SECRET',None)
-
 async def log_request(request: Request):
    for header in request.headers:
       logger.debug(f"Request header:[{header}]:[{request.headers[header]}]")   
@@ -44,6 +42,7 @@ async def is_valid_slack_signature(request: Request):
 
    body = await request.body()
    data_str = body.decode()
+   SLACK_SIGNING_SECRET = Config.get_or_else('SLACK','SIGNING_SECRET',None)
    signature_ok = validate_slack_signature( signing_secret=SLACK_SIGNING_SECRET, data=data_str, timestamp=req_timestamp, signature=req_signature) 
    logger.debug(f"validate signature data: [{data_str}], signature_ok:[{signature_ok}]")
    if (not signature_ok):
@@ -56,6 +55,12 @@ app = FastAPI()
 app.include_router(
    slack_events.router,
    tags=["slack","events"],
+   dependencies=[Depends(is_valid_slack_signature)],
+)
+
+app.include_router(
+   slack_events.router,
+   tags=["slack","commands"],
    dependencies=[Depends(is_valid_slack_signature)],
 )
 

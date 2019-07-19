@@ -8,7 +8,7 @@ from datetime import datetime
 from starlette.testclient import TestClient
 
 from app.common.config import Config
-from app.main import app,SLACK_SIGNING_SECRET
+from app.main import app
 from app.common.util import create_slack_signature
 
 client = TestClient(app)

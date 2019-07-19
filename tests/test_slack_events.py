@@ -2,15 +2,16 @@ import json
 from time import time
 
 from starlette.testclient import TestClient
-
-from app.main import app,SLACK_SIGNING_SECRET
+from app.common.config import Config
 from app.common.util import create_slack_signature
+from app.main import app
 
 client = TestClient(app)
 
 def _send_data( data ):
     data_json = json.dumps(data)     
     timestamp = int(time())
+    SLACK_SIGNING_SECRET = Config.get_or_else('SLACK','SIGNING_SECRET',None)
     signature = create_slack_signature(SLACK_SIGNING_SECRET, timestamp, data_json)
     response = client.post(
         "slack/events",
