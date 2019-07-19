@@ -17,19 +17,17 @@ logger = logging.getLogger(__name__)
 logger.info("commands start")
 
 class Command:
-    CHANNEL_TGX_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_TGX_ANNOUNCEMENTS',None)
-    CHANNEL_ALL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ALL_ANNOUNCEMENTS',None)
-    logger.info(f"Channel announcements TGX[{CHANNEL_TGX_ANNOUNCEMENTS}], ALL [{CHANNEL_ALL_ANNOUNCEMENTS}]")
-    
-    web_client = slack.WebClient(token=Config.get_or_else('SLACK', 'BOT_TOKEN',None), run_async=True)
-
+  
     def __init__(self,event:BaseModel):
         self.event_in=event
+        self.CHANNEL_TGX_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_TGX_ANNOUNCEMENTS',None)
+        self.CHANNEL_ALL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ALL_ANNOUNCEMENTS',None)
+        self.web_client = slack.WebClient(token=Config.get_or_else('SLACK', 'BOT_TOKEN',None), run_async=True)
 
     async def execute(self): pass
 
     async def get_message_payload(self, messages_file_names:List[str], substitutions:dict={}) -> List[str]:
-        blocks = []
+        blocks = [] 
         for resource_name in messages_file_names:
             file_name = 'resources/slack-messages/' + resource_name + '.json'
             logger.info(f"Reading file_name {file_name}")
@@ -85,10 +83,11 @@ class ChangelogNotify(Command):
             # Get the onboarding message payload
             blocks = await self.get_message_payload( ["changelog"], {'app': self.event_in.femtoo_callback_label, 'url': self.event_in.femtoo_callback_url} )
             # Post the onboarding message in Slack member channel
+            logger.info(f"Channel announcements TGX:[{self.CHANNEL_TGX_ANNOUNCEMENTS}], ALL:[{self.CHANNEL_ALL_ANNOUNCEMENTS}]")
             response = await self.send_message( channel=self.CHANNEL_TGX_ANNOUNCEMENTS, as_user=True, blocks=blocks)
-            logger.info(f"ChangelogNotify OK[{response}]")
+            logger.info(f"ChangelogNotify: OK[{response}]")
         else:
-            logger.info(f"ChangelogNotify not changes for today [{response}]")
+            logger.info(f"ChangelogNotify: not changes to notify")
 
 class NonImplementedCommand(Command):
     async def execute(self):
