@@ -55,13 +55,14 @@ app = FastAPI()
 app.include_router(
    slack_events.router,
    tags=["slack","events"],
-   dependencies=[Depends(is_valid_slack_signature)],
+   dependencies=[Depends(is_valid_slack_signature)]
 )
 
+# Pending to validate signature ad dependency. https://github.com/encode/starlette/issues/495#issuecomment-494008175
 app.include_router(
    slack_commands.router,
    tags=["slack","commands"],
-   dependencies=[Depends(log_request)],
+   dependencies=[]
 )
 
 app.include_router(

@@ -9,26 +9,26 @@ class UserModel(BaseModel):
 
 
 class CommandModelIn(BaseModel):
-    team_id: str
-    team_domain: str 
-    enterprise_id: str
-    enterprise_name: str
-    channel_id: str
-    channel_name: str
-    user_id: str
-    user_name: str
     command: str
     text: str
     response_url: str
-    trigger_id: str
+    team_id: str = None
+    team_domain: str = None
+    enterprise_id: str = None
+    enterprise_name: str = None
+    channel_id: str = None
+    channel_name: str = None
+    user_id: str = None
+    user_name: str = None
+    trigger_id: str = None
 
 class AttachmentsModel(BaseModel):
    text: List[str]
 
 class CommandModelOut(BaseModel):
-    response_type: str
-    text: str
-    attachments: AttachmentsModel  
+    response_type: str = None
+    text: str = None
+    #attachments: AttachmentsModel  
 
 class EventModel(BaseModel):
    type: str = Schema(...,title="Indicates which kind of event dispatch this is, usually `event_callback`.")
