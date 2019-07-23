@@ -40,5 +40,4 @@ def test_insightsx(mock_env_slack):
               "text": "dummy_test"
             }
   response = _send_data(urllib.parse.urlencode(payload))
-  #response = _send_data(payload)
-  assert response.status_code == 200
+  assert response.status_code in (200,422)

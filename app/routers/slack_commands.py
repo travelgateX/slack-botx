@@ -14,6 +14,7 @@ logger.info("slack commands start")
 router = APIRouter()
 
 #https://api.slack.com/slash-commands#best_practices
+'''
 @router.post("/slack/commands", tags=["slack","commands"])
 async def post_event(*, command:str=Form(...), text:str=Form(...), response_url:str=Form(...),background_tasks: BackgroundTasks):
    command_model = CommandModelIn( command=command, text=text, response_url=response_url ) 
@@ -26,4 +27,9 @@ async def post_event(*, command:str=Form(...), text:str=Form(...), response_url:
      #macro.add(  factory(event.event.type, event) )
      #background_tasks.add_task( macro.run )
      return CommandModelOut(**command_model.dict())
-   
+'''   
+
+@router.post("/slack/commands", tags=["slack","commands"])
+async def post_event(args):
+   logger.info(f"POST EVENTS")
+   logger.info(f"Slack commands:[{command_model}]")

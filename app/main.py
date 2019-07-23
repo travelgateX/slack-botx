@@ -21,9 +21,10 @@ logger.info("main start")
 
 async def log_request(request: Request):
    for header in request.headers:
-      logger.debug(f"Request header:[{header}]:[{request.headers[header]}]")   
+      logger.info(f"Request header:[{header}]:[{request.headers[header]}]")   
    body = await request.body()
-   logger.debug(f"Request body:[{body}]")
+   data_str = body.decode()
+   logger.info(f"Request body:[{data_str}]")
  
 async def is_valid_slack_signature(request: Request):
    logger.info("Validating slack signature...")
@@ -61,8 +62,8 @@ app.include_router(
 # Pending to validate signature ad dependency. https://github.com/encode/starlette/issues/495#issuecomment-494008175
 app.include_router(
    slack_commands.router,
-   tags=["slack","commands"],
-   dependencies=[]
+   tags=["slack_test","commands_test"],
+   dependencies=[Depends(log_request)]
 )
 
 app.include_router(
