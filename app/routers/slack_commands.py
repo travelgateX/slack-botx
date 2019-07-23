@@ -18,11 +18,9 @@ router = APIRouter()
 async def post_event(*, command: str = Form(...), response_url: str = Form(...), text: str = Form(None), background_tasks: BackgroundTasks):
    command_model = CommandModelIn( command=command, response_url=response_url, text=text ) 
    logger.info(f"Slack commands:[{command_model}]")
-   if command_model.command == "/insightsx": 
-      return CommandModelOut(text="Command received", text_test=text)
-   else:  #Other comevents are executed in background 
-     logger.warning(f"Command not implemented:[{command_model.command}]")
-     #macro = Macro()
-     #macro.add(  factory(event.event.type, event) )
-     #background_tasks.add_task( macro.run )
-     return CommandModelOut(text="Command not implemented", text_test=text)
+   #Add background task and immediate response
+   macro = Macro()
+   macro.add(  factory(command_model.command, command_model) )
+   background_tasks.add_task( macro.run )
+   return CommandModelOut(text_test=text)
+   

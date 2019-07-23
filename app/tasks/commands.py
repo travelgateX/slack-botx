@@ -4,21 +4,39 @@ import slack
 import time
 from datetime import datetime
 import aiofiles
+import requests
+import aiohttp
 import sys
 import json
 from string import Template
 from typing import (List)
 from pydantic import BaseModel
-from app.common.slack_models import EventModelIn
+from app.common.slack_models import EventModelIn,CommandModelIn,CommandModelOut
 from app.common.config import Config
 
 Config.init_config()
 logger = logging.getLogger(__name__)
 logger.info("commands start")
 
+class Http:
+    async def __aenter__(self):
+        self._session = aiohttp.ClientSession()
+        return self
+
+    async def __aexit__(self, *err):
+        await self._session.close()
+        self._session = None
+
+    async def post(self, url,data):
+        async with self._session.get(url, data=data) as resp:
+            if "https://test.com" not in url: 
+                resp.raise_for_status()
+            return await resp.read()
+
 class Command:
-  
+    
     def __init__(self,event:BaseModel):
+        logger.info("Command init")
         self.event_in=event
         self.CHANNEL_TGX_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_TGX_ANNOUNCEMENTS',None)
         self.CHANNEL_ALL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ALL_ANNOUNCEMENTS',None)
@@ -40,7 +58,7 @@ class Command:
             for block in json_blocks:
                 blocks.append( block ) 
         return blocks
-    
+  
     async def send_message(self, channel:str, as_user:bool, blocks:List[str]):
         try:
             response = await self.web_client.chat_postMessage(
@@ -48,7 +66,7 @@ class Command:
                     blocks = blocks,
                     as_user = as_user
                     )
-            logger.info(f"response {response}")
+            logger.info(f"slack response {response}")
             return response
         except slack.errors.SlackApiError as err:
              logger.error(f"Exception SlackApiError [{err}]")
@@ -88,6 +106,16 @@ class ChangelogNotify(Command):
             logger.info(f"ChangelogNotify: OK[{response}]")
         else:
             logger.info(f"ChangelogNotify: not changes to notify")
+
+class AlertsX(Command):
+    async def execute(self):
+        command_in : CommandModelIn = self.event_in
+        logger.info(f"AlertsX.execute[{command_in}]")
+        command_out = CommandModelOut(text="Hello world")
+        data = command_out.dict()
+        async with Http() as http:
+            response = await http.post(url = command_in.response_url, data = data)
+        logger.info(f"AlertsX execution OK [{response}]")
 
 class NonImplementedCommand(Command):
     async def execute(self):

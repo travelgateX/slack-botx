@@ -14,7 +14,6 @@ from app.routers import (slack_events, onwebchange_webhooks,slack_commands)
 from app.common.util import validate_slack_signature, validate_github_signature
 from app.common.config import Config
 
-
 Config.init_config()
 logger = logging.getLogger(__name__)
 logger.info("main start")
@@ -50,7 +49,6 @@ async def is_valid_slack_signature(request: Request):
       logger.error("Bad request signature")
       raise HTTPException( status_code=403, detail="Bad request signature")
     
-
 app = FastAPI()
 
 app.include_router(
