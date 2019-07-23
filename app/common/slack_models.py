@@ -28,6 +28,7 @@ class AttachmentsModel(BaseModel):
 class CommandModelOut(BaseModel):
     response_type: str = None
     text: str = None
+    text_test: str = None
     #attachments: AttachmentsModel  
 
 class EventModel(BaseModel):

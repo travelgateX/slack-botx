@@ -40,4 +40,23 @@ def test_insightsx(mock_env_slack):
               "text": "dummy_test"
             }
   response = _send_data(urllib.parse.urlencode(payload))
-  assert response.status_code in (200,422)
+  assert response.status_code == 200
+  assert response.json()['text_test'] == "dummy_test"
+  
+def test_insightsx_text_none(mock_env_slack):
+  payload = { "team_id":"T0001",
+              "team_domain":"example",
+              "enterprise_id":"E0001",
+              "enterprise_name": "name enterprise",
+              "channel_id": "test",
+              "channel_name": "test_channel",
+              "user_id": "U2147483697",
+              "user_name": "Steve",
+              "response_url":"https://hooks.slack.com/commands/1234/5678",
+              "trigger_id":"13345224609.738474920.8088930838d88f008e0",
+              "command": "/insightsx"
+            }
+  response = _send_data(urllib.parse.urlencode(payload))
+  assert response.status_code == 200
+  assert response.json()['text_test'] is None
+ 
