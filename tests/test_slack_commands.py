@@ -36,7 +36,7 @@ def test_insightsx(mock_env_slack):
               "user_name": "Steve",
               "response_url":"https://hooks.slack.com/commands/1234/5678",
               "trigger_id":"13345224609.738474920.8088930838d88f008e0",
-              "command": "insightsx",
+              "command": "/insightsx",
               "text": "dummy_test"
             }
   response = _send_data(urllib.parse.urlencode(payload))
