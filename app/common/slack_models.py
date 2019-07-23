@@ -10,8 +10,8 @@ class UserModel(BaseModel):
 
 class CommandModelIn(BaseModel):
     command: str
-    text: str
     response_url: str
+    text:str = None
     team_id: str = None
     team_domain: str = None
     enterprise_id: str = None
