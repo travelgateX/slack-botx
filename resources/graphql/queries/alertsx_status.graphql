@@ -1,0 +1,24 @@
+   {alertsX
+   {alerts(criteria:{groups:["${criteria_group}"],alertCodes:["ALT_216","ALT_217"]})
+    {
+      edges{
+        node{
+          code
+          alertData{
+          events{
+            edges{
+              node{
+                eventData{
+                  status
+                  code
+                  groupBy
+                }
+              }
+            }
+          }
+          }
+        }
+      }
+    }
+  }
+}

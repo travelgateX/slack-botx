@@ -12,26 +12,13 @@ from string import Template
 from typing import (List)
 from pydantic import BaseModel
 from app.common.slack_models import EventModelIn,CommandModelIn,CommandModelOut
+import app.common.util
 from app.common.config import Config
+from app.common.util import HttpGql
 
 Config.init_config()
 logger = logging.getLogger(__name__)
 logger.info("commands start")
-
-class Http:
-    async def __aenter__(self):
-        self._session = aiohttp.ClientSession()
-        return self
-
-    async def __aexit__(self, *err):
-        await self._session.close()
-        self._session = None
-
-    async def post(self, url,data):
-        async with self._session.get(url, data=data) as resp:
-            if "https://test.com" not in url: 
-                resp.raise_for_status()
-            return await resp.read()
 
 class Command:
     
@@ -41,54 +28,19 @@ class Command:
         self.CHANNEL_TGX_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_TGX_ANNOUNCEMENTS',None)
         self.CHANNEL_ALL_ANNOUNCEMENTS = Config.get_or_else('SLACK', 'CHANNEL_ALL_ANNOUNCEMENTS',None)
         self.web_client = slack.WebClient(token=Config.get_or_else('SLACK', 'BOT_TOKEN',None), run_async=True)
+        self.http_gql_client = HttpGql(url=Config.get_or_else('TRAVELGATEX', 'GRAPHQL_API_URL',None), api_key=Config.get_or_else('TRAVELGATEX', 'GRAPHQL_API_KEY',None))
 
     async def execute(self): pass
-
-    async def get_message_payload(self, messages_file_names:List[str], substitutions:dict={}) -> List[str]:
-        blocks = [] 
-        for resource_name in messages_file_names:
-            file_name = 'resources/slack-messages/' + resource_name + '.json'
-            logger.info(f"Reading file_name {file_name}")
-            async with aiofiles.open(file_name, mode='r', encoding='utf-8') as f:
-               file_str = await f.read()
-               str_template = Template(file_str)
-               file_str = str_template.safe_substitute(substitutions)
-               json_blocks = json.loads( file_str)
-
-            for block in json_blocks:
-                blocks.append( block ) 
-        return blocks
-  
-    async def send_message(self, channel:str, as_user:bool, blocks:List[str]):
-        try:
-            response = await self.web_client.chat_postMessage(
-                    channel=channel, 
-                    blocks = blocks,
-                    as_user = as_user
-                    )
-            logger.info(f"slack response {response}")
-            return response
-        except slack.errors.SlackApiError as err:
-             logger.error(f"Exception SlackApiError [{err}]")
-             raise
-
-    def _get_task_block(self,text, information):
-        return [
-            {"type": "section", "text": {"type": "mrkdwn", "text": text}},
-            {"type": "context", "elements": [{"type": "mrkdwn", "text": information}]},
-        ]    
+   
 
 # Commands
 class TeamJoin(Command):
     async def execute(self):
         logger.info(f"TeamJoin.execute[{self.event_in}]")
-    
         # Get the onboarding message payload
-        blocks = await self.get_message_payload( ["onboarding"], {'user_real_name': self.event_in.event.user.real_name} )
-
+        blocks = await app.common.util.get_message_payload( ["onboarding"], {'user_real_name': self.event_in.event.user.real_name} )
         # Post the onboarding message in Slack member channel
-        response = await self.send_message( channel=self.event_in.event.user.id,  as_user=True, blocks=blocks)
-        
+        response = await app.common.util.send_slack_message(  web_client=self.web_client, channel=self.event_in.event.user.id,  as_user=True, blocks=blocks)
         logger.info(f"TeamJoin execution OK [{response}]")
 
 class ChangelogNotify(Command):
@@ -99,10 +51,10 @@ class ChangelogNotify(Command):
         today = datetime.today().strftime('%Y-%m-%d')
         if today in self.event_in.femtoo_callback_data:
             # Get the onboarding message payload
-            blocks = await self.get_message_payload( ["changelog"], {'app': self.event_in.femtoo_callback_label, 'url': self.event_in.femtoo_callback_url} )
+            blocks = await app.common.util.get_message_payload( ["changelog"], {'app': self.event_in.femtoo_callback_label, 'url': self.event_in.femtoo_callback_url} )
             # Post the onboarding message in Slack member channel
             logger.info(f"Channel announcements TGX:[{self.CHANNEL_TGX_ANNOUNCEMENTS}], ALL:[{self.CHANNEL_ALL_ANNOUNCEMENTS}]")
-            response = await self.send_message( channel=self.CHANNEL_TGX_ANNOUNCEMENTS, as_user=True, blocks=blocks)
+            response = await app.common.util.send_slack_message( web_client=self.web_client, channel=self.CHANNEL_TGX_ANNOUNCEMENTS, as_user=True, blocks=blocks)
             logger.info(f"ChangelogNotify: OK[{response}]")
         else:
             logger.info(f"ChangelogNotify: not changes to notify")
@@ -111,11 +63,30 @@ class AlertsX(Command):
     async def execute(self):
         command_in : CommandModelIn = self.event_in
         logger.info(f"AlertsX.execute[{command_in}]")
-        command_out = CommandModelOut(text="Hello world")
-        data = command_out.dict()
-        async with Http() as http:
-            response = await http.post(url = command_in.response_url, data = data)
+        
+        #get alerts status
+        gql_query = await app.common.util.format_graphql_query( "alertsx_status", {'criteria_group':"easework-admin"})
+        response_json = await self.http_gql_client.query(  gql_query )
+        logger.info(f"gql_response [{response_json}]")
+
+        #create the response message
+        count_ok:int = 0
+        count_err:int = 0
+        suppliers_alerts = []
+        for edges in response_json['data']['alertsX']['alerts']['edges']:
+            for node_edges in edges['node']['alertData']['events']['edges']:
+                event_data = node_edges['node']['eventData']
+                if event_data['status'] == "OK":
+                    count_ok += 1
+                else:
+                    count_err += 1
+                    suppliers_alerts.append(event_data['groupBy']) 
+        blocks = await app.common.util.get_message_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
+        
+        #response to slack
+        response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
         logger.info(f"AlertsX execution OK [{response}]")
+
 
 class NonImplementedCommand(Command):
     async def execute(self):

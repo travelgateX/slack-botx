@@ -60,7 +60,7 @@ app.include_router(
 # Pending to validate signature ad dependency. https://github.com/encode/starlette/issues/495#issuecomment-494008175
 app.include_router(
    slack_commands.router,
-   tags=["slack_test","commands_test"],
+   tags=["slack","commands"],
    dependencies=[]
 )
 

@@ -23,6 +23,8 @@
 * [x] Welcome and onboard new members providing support resources
 * [x] Advise on changelog updates
 * [ ] Interactive commands wrapping [TravelgateX GraphQL API](https://api.travelgatex.com)
+  * [x] Alerts-X
+  * [ ] Insights-X
 * [ ] User answers to __very simple__ support questions
 
 ## Requirements
@@ -44,6 +46,7 @@ Modify app/config.ini or set environment variables:
 ```bash
 export SLACK_BOT_TOKEN="xoxb-your-token"
 export SLACK_SIGNING_SECRET="your-signing-secret"
+export TRAVELGATEX_GRAPHQL_API_KEY="your-travelgatex-api-key"
 ```
 
 * Windows
@@ -51,6 +54,7 @@ export SLACK_SIGNING_SECRET="your-signing-secret"
 ```bash
 set SLACK_BOT_TOKEN=xoxb-your-token
 set SLACK_SIGNING_SECRET=your-signing-secret
+set TRAVELGATEX_GRAPHQL_API_KEY=your-travelgatex-api-key
 ```
 
 ## Run

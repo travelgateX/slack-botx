@@ -1,7 +1,88 @@
 import hashlib
 import hmac
 import logging
+import json
+import slack
+import requests
+from string import Template
+from typing import (List)
+import aiofiles
+from app.common.config import Config
 
+
+Config.init_config()
+logger = logging.getLogger(__name__)
+logger.info("util start")
+
+class HttpGql:
+    def __init__(self,url:str,api_key:str):
+        self.URL = url
+        self.API_KEY = api_key
+
+    async def query( self, query:str)->json:
+        headers = {"Content-Type": "application/json",
+                   "Authorization": f"Apikey {self.API_KEY}"
+                  }
+        logger.info(f"url:{self.URL}, apikey:{self.API_KEY}, query:{query}")
+        response = requests.post(url=self.URL, data=query, headers=headers)
+        response.raise_for_status()  
+        return response.json()
+
+
+
+def get_slack_task_block(self,text, information):
+    return [
+        {"type": "section", "text": {"type": "mrkdwn", "text": text}},
+        {"type": "context", "elements": [{"type": "mrkdwn", "text": information}]},
+    ]    
+
+async def get_message_payload(messages_file_names:List[str], substitutions:dict={}) -> List[str]:
+    blocks = [] 
+    for resource_name in messages_file_names:
+        file_name = 'resources/slack-messages/' + resource_name + '.json'
+        logger.info(f"Reading file_name {file_name}")
+        async with aiofiles.open(file_name, mode='r', encoding='utf-8') as f:
+            file_str = await f.read()
+            str_template = Template(file_str)
+            file_str = str_template.safe_substitute(substitutions)
+            json_blocks = json.loads( file_str)
+
+        for block in json_blocks:
+            blocks.append( block ) 
+    return blocks
+
+async def send_slack_message(web_client, channel:str, as_user:bool, blocks:List[str]):
+    try:
+        response = await web_client.chat_postMessage(
+                channel=channel, 
+                blocks = blocks,
+                as_user = as_user
+                )
+        logger.info(f"slack response {response}")
+        return response
+    except slack.errors.SlackApiError as err:
+            logger.error(f"Exception SlackApiError [{err}]")
+            raise
+
+async def format_graphql_query(resource_name:str, substitutions:dict={}):
+    file_name= 'resources/graphql/queries/' + resource_name + '.graphql'
+    logger.info(f"Reading file_name {file_name}")
+    async with aiofiles.open(file_name, mode='r', encoding='utf-8') as f:
+        file_str = await f.read()
+        str_template = Template(file_str)
+        file_str = str_template.safe_substitute(substitutions)
+
+    #Remove white characters, tabs... and escape " in variables
+    file_str = file_str.replace("\t"," ").replace("\r"," ").replace("\n"," ").replace('"','\\"')
+    
+    #Graphql Query starts with query
+    return """{\"query\":\"""" + file_str + """\"}"""
+
+def send_slack_post( url:str, data:json)->json:
+    headers = {"Content-Type": "application/json"}
+    response = requests.post(url=url, data=data, headers=headers)
+    response.raise_for_status()  
+    return response.json()
 
 """
     Slack creates a unique string for your app and shares it with you. Verify

@@ -1,6 +1,5 @@
 slackclient==2.1.0
 fastapi[all]==0.33.0
 aiofiles==0.4.0
-aiohttp==3.5.4
 pytest
 certifi
