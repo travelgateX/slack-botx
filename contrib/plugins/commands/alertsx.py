@@ -2,6 +2,7 @@ from app.tasks.base_tasks import Command
 from app.common.slack_models import CommandModelIn 
 import app.common.util
 import argparse
+import json
 
 class Task(Command):
     async def execute(self):
@@ -29,6 +30,7 @@ class Task(Command):
         
         #response to slack
         self.logger.info(f"Responding alertsx:[{command_in.response_url}][{blocks}]")
+        response = app.common.util.send_slack_post(url = command_in.response_url, data = {"text":"test_tex oscar"})
         response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
         self.logger.info(f"AlertsX execution OK [{response}]")
 
