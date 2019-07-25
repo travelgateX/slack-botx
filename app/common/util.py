@@ -39,7 +39,7 @@ def get_slack_task_block(self,text, information):
 async def get_message_payload(messages_file_names:List[str], substitutions:dict={}) -> List[str]:
     blocks = [] 
     for resource_name in messages_file_names:
-        file_name = 'resources/slack-messages/' + resource_name + '.json'
+        file_name = 'contrib/resources/slack-messages/' + resource_name + '.json'
         logger.info(f"Reading file_name {file_name}")
         async with aiofiles.open(file_name, mode='r', encoding='utf-8') as f:
             file_str = await f.read()
@@ -65,7 +65,7 @@ async def send_slack_message(web_client, channel:str, as_user:bool, blocks:List[
             raise
 
 async def format_graphql_query(resource_name:str, substitutions:dict={}):
-    file_name= 'resources/graphql/queries/' + resource_name + '.graphql'
+    file_name= 'contrib/resources/graphql/queries/' + resource_name + '.graphql'
     logger.info(f"Reading file_name {file_name}")
     async with aiofiles.open(file_name, mode='r', encoding='utf-8') as f:
         file_str = await f.read()
