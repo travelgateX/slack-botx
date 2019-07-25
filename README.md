@@ -96,3 +96,7 @@ Heroku [deployment url](https://slack-botx.herokuapp.com/)
 ### As plugin developer
 
 - By modulen name
+Command:
+
+- Create json slack block help
+- Imeplemtn command name

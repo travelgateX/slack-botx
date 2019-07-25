@@ -32,11 +32,11 @@ class Task(Command):
         response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
         self.logger.info(f"AlertsX execution OK [{response}]")
 
-    async def show_help(self, text:str)->bool:
+    async def needs_help(self)->bool:
         parser = argparse.ArgumentParser()
         parser.add_argument("status")
         parser.add_argument("help")
-        args = parser.parse_args( text )
+        args = parser.parse_args( self.event_in.text )
         if (args.help):
             return True
         if not (args.status):
