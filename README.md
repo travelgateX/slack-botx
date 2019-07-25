@@ -89,5 +89,10 @@ pytest
 
 Heroku [deployment url](https://slack-botx.herokuapp.com/)
 
-## Cloud deployment
+## How to contribute
+
+### As core maintainer
+
+### As plugin developer
+
 - By modulen name
