@@ -30,5 +30,5 @@ async def post_event(*, command: str = Form(...), response_url: str = Form(...),
    background_tasks.add_task( macro.run )
    
    #Immediate response
-   return CommandModelOut(text="Command is being processed in background.",text_test=text)
+   return CommandModelOut(text="We'll response you in a few seconds.",text_test=text)
    
