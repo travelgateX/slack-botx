@@ -79,7 +79,7 @@ async def format_graphql_query(resource_name:str, substitutions:dict={}):
     return """{\"query\":\"""" + file_str + """\"}"""
 
 def send_slack_post( url:str, data:json)->json:
-    headers = {"Content-Type": "application/json"}
+    headers = {"Content-type": "application/json"}
     response = requests.post(url=url, data=data, headers=headers)
     response.raise_for_status()  
     return response.json()

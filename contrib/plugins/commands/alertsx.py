@@ -30,8 +30,8 @@ class Task(Command):
         
         #response to slack
         self.logger.info(f"Responding alertsx:[{command_in.response_url}][{blocks}]")
-        response = app.common.util.send_slack_post(url = command_in.response_url, data = {"text":"test_tex oscar"})
-        response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
+        response = app.common.util.send_slack_post(url = command_in.response_url, data = {"response_type": "in_channel", "text":"test_tex oscar"})
+        #response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
         self.logger.info(f"AlertsX execution OK [{response}]")
 
     async def needs_help(self)->bool:
