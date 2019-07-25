@@ -80,9 +80,15 @@ async def format_graphql_query(resource_name:str, substitutions:dict={}):
 
 def send_slack_post( url:str, data:json)->json:
     headers = {"Content-type": "application/json"}
-    response = requests.post(url=url, data=data, headers=headers)
-    response.raise_for_status()  
-    return response.json()
+    try:
+        response = requests.post(url=url, data=data, headers=headers)
+        response.raise_for_status() 
+        return response.json()
+    except requests.exceptions.HTTPError as err:
+        logger.error(f"Slack post error {err}")
+        raise
+     
+   
 
 """
     Slack creates a unique string for your app and shares it with you. Verify

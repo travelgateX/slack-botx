@@ -29,8 +29,9 @@ class Task(Command):
         blocks = await app.common.util.get_message_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
         
         #response to slack
+        #https://api.slack.com/reference/messaging/payload
         self.logger.info(f"Responding alertsx:[{command_in.response_url}][{blocks}]")
-        response = app.common.util.send_slack_post(url = command_in.response_url, data = {"response_type": "in_channel", "text":"test_tex oscar"})
+        response = app.common.util.send_slack_post(url = command_in.response_url, data = {"replace_original": "true", "text":"test_tex oscar"})
         #response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
         self.logger.info(f"AlertsX execution OK [{response}]")
 
