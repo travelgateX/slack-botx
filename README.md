@@ -15,6 +15,7 @@
 * Based on [Slack Events](https://api.slack.com/events-api)
 * Powered by [FastAPI web framework](https://fastapi.tiangolo.com)
 * Using standard [Python 3.7+ type hints](https://docs.python.org/3/library/typing.html)
+* Easy to contribute using standard [Plugins Ecosystem](https://packaging.python.org/guides/creating-and-discovering-plugins/)
 * Easy background execution with [Starlette Background Tasks](https://www.starlette.io/background)
 * Complex background execution with [Apache Airflow](https://airflow.apache.org/)
 
@@ -87,3 +88,6 @@ pytest
 ### Heroku
 
 Heroku [deployment url](https://slack-botx.herokuapp.com/)
+
+## Cloud deployment
+- By modulen name

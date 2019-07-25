@@ -5,7 +5,7 @@ from pydantic import BaseModel,Schema
 from app.common.models import EventModelOut
 from app.common.onwebchange_models import CallbackPOSTModelIn
 from app.common.config import Config
-from app.tasks.commands_factory import Macro, Command, factory
+from app.tasks.factory import Macro, event_factory
 
 Config.init_config()
 logger = logging.getLogger(__name__)
@@ -18,6 +18,6 @@ async def post_event(*, femtoo_callback_url: str = Form(...), femtoo_callback_da
    callback = CallbackPOSTModelIn( femtoo_callback_url=urllib.parse.unquote(femtoo_callback_url),femtoo_callback_data=urllib.parse.unquote(femtoo_callback_data),femtoo_callback_label=urllib.parse.unquote(femtoo_callback_label)) 
    logger.info(f"OnWebChange webhook:[{callback}]")
    macro = Macro()
-   macro.add(  factory("onwebchange_callback", callback) )
+   macro.add(  event_factory("changelog_notify", callback) )
    background_tasks.add_task( macro.run )
    return EventModelOut()

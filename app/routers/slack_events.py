@@ -5,7 +5,7 @@ from pydantic import BaseModel,Schema
 from app.common.config import Config
 from app.common.models import EventModelOut
 from app.common.slack_models import EventModelIn, ChallengeModelOut
-from app.tasks.commands_factory import Macro, Command, factory
+from app.tasks.factory import Macro, event_factory
 
 Config.init_config()
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ async def post_event(event:EventModelIn, background_tasks: BackgroundTasks):
       return ChallengeModelOut(**event.dict())
    else:  #Other events are executed in background 
      macro = Macro()
-     macro.add(  factory(event.event.type, event) )
+     macro.add(  event_factory(event.event.type, event) )
      background_tasks.add_task( macro.run )
      return EventModelOut()
    
