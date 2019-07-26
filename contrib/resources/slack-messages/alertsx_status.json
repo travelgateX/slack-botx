@@ -13,14 +13,14 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":green-heart: ${count_ok}"
+			"text": ":green_heart: ${count_ok}"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":red-heart: ${count_err}"
+			"text": ":heart: ${count_err}"
 		}
 	}
 ]

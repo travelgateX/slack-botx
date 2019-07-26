@@ -4,11 +4,12 @@ import logging
 import json
 import slack
 import requests
+from pydantic import BaseModel
 from string import Template
 from typing import (List)
 import aiofiles
 from app.common.config import Config
-
+from fastapi.encoders import jsonable_encoder
 
 Config.init_config()
 logger = logging.getLogger(__name__)
@@ -28,15 +29,14 @@ class HttpGql:
         response.raise_for_status()  
         return response.json()
 
-
-
 def get_slack_task_block(self,text, information):
     return [
         {"type": "section", "text": {"type": "mrkdwn", "text": text}},
         {"type": "context", "elements": [{"type": "mrkdwn", "text": information}]},
     ]    
 
-async def get_message_payload(messages_file_names:List[str], substitutions:dict={}) -> List[str]:
+
+async def get_message_blocks_payload(messages_file_names:List[str], substitutions:dict={}) -> List[str]:
     blocks = [] 
     for resource_name in messages_file_names:
         file_name = 'contrib/resources/slack-messages/' + resource_name + '.json'
@@ -50,6 +50,7 @@ async def get_message_payload(messages_file_names:List[str], substitutions:dict=
         for block in json_blocks:
             blocks.append( block ) 
     return blocks
+
 
 async def send_slack_message(web_client, channel:str, as_user:bool, blocks:List[str]):
     try:
@@ -78,10 +79,13 @@ async def format_graphql_query(resource_name:str, substitutions:dict={}):
     #Graphql Query starts with query
     return """{\"query\":\"""" + file_str + """\"}"""
 
-def send_slack_post( url:str, data:json)->json:
+def send_slack_post_model( url:str, data_model:BaseModel)->json:
+    return send_slack_post_json(url=url, data_json=jsonable_encoder(data_model))
+
+def send_slack_post_json( url:str, data_json:json)->json:
     headers = {"Content-type": "application/json"}
     try:
-        response = requests.post(url=url, data=data, headers=headers)
+        response = requests.post(url=url, data=data_json, headers=headers)
         response.raise_for_status() 
         return response.json()
     except requests.exceptions.HTTPError as err:

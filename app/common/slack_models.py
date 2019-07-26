@@ -1,5 +1,7 @@
 from typing import List
 from pydantic import BaseModel,Schema
+from enum import Enum, IntEnum
+
 
 #https://api.slack.com/types/event 
 class UserModel(BaseModel):
@@ -25,11 +27,31 @@ class CommandModelIn(BaseModel):
 class AttachmentsModel(BaseModel):
    text: List[str]
 
-class CommandModelOut(BaseModel):
-    response_type: str = None
-    text: str = None
+class ResponseTypeEnum(str, Enum):
+    in_channel = 'in_channel'
+    ephemeral = 'ephemeral'
+
+class Text(BaseModel):
+   block_type: str = Schema(...,alias='type')
+   text: str
+   emoji: bool = None
+   verbatim: bool =None
+
+
+class SectionBlock(BaseModel):
+   block_type: str = Schema(...,alias='type')
+   text: Text
+   block_id: str = None
+
+class MessageModelOut(BaseModel):
+   text: str = None
+   blocks: List[SectionBlock] = None
+
+class CommandModelOut(MessageModelOut):
+    response_type: ResponseTypeEnum = None
     text_test: str = None
-    #attachments: AttachmentsModel  
+    replace_original: bool = None
+    delete_original: bool = None
 
 class EventModel(BaseModel):
    type: str = Schema(...,title="Indicates which kind of event dispatch this is, usually `event_callback`.")

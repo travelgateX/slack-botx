@@ -1,5 +1,6 @@
 from app.tasks.base_tasks import Command
-from app.common.slack_models import CommandModelIn 
+from app.common.slack_models import CommandModelIn, CommandModelOut 
+from fastapi.encoders import jsonable_encoder
 import app.common.util
 import argparse
 import json
@@ -26,13 +27,13 @@ class Task(Command):
                 else:
                     count_err += 1
                     suppliers_alerts.append(event_data['groupBy']) 
-        blocks = await app.common.util.get_message_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
-        
+        blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
+        self.logger.info(f"blocks:[{command_in.response_url}][{blocks}]")
+        out =  CommandModelOut( response_type='in_channel', replace_original=True )
+        self.logger.info(f"out:[{out.dict()}]")
         #response to slack
         #https://api.slack.com/reference/messaging/payload
-        self.logger.info(f"Responding alertsx:[{command_in.response_url}][{blocks}]")
-        response = app.common.util.send_slack_post(url = command_in.response_url, data = json.dumps({"replace_original": "true", "text":"test_tex oscar"}) )
-        #response = app.common.util.send_slack_post(url = command_in.response_url, data = blocks)
+        response = app.common.util.send_slack_post_model(url = command_in.response_url, data_model = out)
         self.logger.info(f"AlertsX execution OK [{response}]")
 
     async def needs_help(self)->bool:
