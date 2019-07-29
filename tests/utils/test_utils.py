@@ -23,7 +23,7 @@ def test_slack_post():
 
 @pytest.mark.asyncio
 async def test_command_model_out_json():
-    out =  CommandModelOut( response_type='in_channel', replace_original=True)
+    out =  CommandModelOut( type='in_channel', replace_original=True)
     assert out != None
     blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': 100, 'count_err': 1} )
     block_list = []
@@ -36,5 +36,9 @@ async def test_command_model_out_json():
     out.blocks = blocks
     assert out != None
     assert len(out.blocks) == 4
+    out_json = jsonable_encoder( out, include_none=False)
+    print(out_json)
+    assert out_json['replace_original'] == True
+    assert 'delete_original' not in out_json
     
     

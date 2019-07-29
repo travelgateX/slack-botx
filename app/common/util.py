@@ -80,7 +80,7 @@ async def format_graphql_query(resource_name:str, substitutions:dict={}):
     return """{\"query\":\"""" + file_str + """\"}"""
 
 def send_slack_post_model( url:str, data_model:BaseModel)->json:
-    return send_slack_post_json(url=url, data_json=jsonable_encoder(data_model))
+    return send_slack_post_json(url=url, data_json=jsonable_encoder(data_model, include_none=False))
 
 def send_slack_post_json( url:str, data_json:json)->json:
     headers = {"Content-type": "application/json"}

@@ -32,13 +32,13 @@ class ResponseTypeEnum(str, Enum):
     ephemeral = 'ephemeral'
 
 class Text(BaseModel):
-   block_type: str = Schema(...,alias='type')
+   block_type: str
    text: str
    emoji: bool = None
    verbatim: bool =None
 
 class SectionBlock(BaseModel):
-   block_type: str = Schema(...,alias='type')
+   type: str
    text: Text
    block_id: str = None
 
