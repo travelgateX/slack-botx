@@ -11,7 +11,7 @@ class Task(Command):
         self.logger.info(f"AlertsX.execute[{command_in}]")
         
         #get alerts status
-        gql_query = await app.common.util.format_graphql_query( "alertsx_status", {'criteria_group':"easework-admin"})
+        gql_query = await app.common.util.format_graphql_query( "alertsx_status", {'criteria_group':"platform-alerts"})
         response_json = await self.http_gql_client.query(  gql_query )
         self.logger.info(f"gql_response [{response_json}]")
 
@@ -27,10 +27,13 @@ class Task(Command):
                 else:
                     count_err += 1
                     suppliers_alerts.append(event_data['groupBy']) 
+        
         blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
         self.logger.info(f"blocks:[{command_in.response_url}][{blocks}]")
+        
         out =  CommandModelOut( response_type='in_channel', replace_original=True )
-        self.logger.info(f"out:[{out.dict()}]")
+        out.blocks = blocks
+        self.logger.info(f"out:[{out}]")
         #response to slack
         #https://api.slack.com/reference/messaging/payload
         response = app.common.util.send_slack_post_model(url = command_in.response_url, data_model = out)

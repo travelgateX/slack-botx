@@ -37,7 +37,6 @@ class Text(BaseModel):
    emoji: bool = None
    verbatim: bool =None
 
-
 class SectionBlock(BaseModel):
    block_type: str = Schema(...,alias='type')
    text: Text

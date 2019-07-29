@@ -5,7 +5,7 @@ import app.common.util
 from fastapi.encoders import jsonable_encoder
 from app.common.util import create_slack_signature,validate_slack_signature
 from app.common.config import Config
-from app.common.slack_models import CommandModelOut, MessageModelOut
+from app.common.slack_models import CommandModelOut, MessageModelOut,SectionBlock,MessageModelOut 
 
 def test_slack_signature(mock_env_slack):
     timestamp = int(time())
@@ -23,9 +23,18 @@ def test_slack_post():
 
 @pytest.mark.asyncio
 async def test_command_model_out_json():
-      blocks = await app.common.util.get_message_blocks_payload( ["onboarding"], {'user_real_name': 'test_name'} )
-      out =  CommandModelOut( response_type='in_channel', replace_original=True, blocks= blocks )
-      json_out = jsonable_encoder(out)
-      print(f"json_out:[{json_out}]")
-      assert json_out != None
-      assert json_out["replace_original"]       
+    out =  CommandModelOut( response_type='in_channel', replace_original=True)
+    assert out != None
+    blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': 100, 'count_err': 1} )
+    block_list = []
+    for block in blocks:
+        #section_block = json.loads(block)
+        block_list.append( block )
+    out.blocks = block_list
+    assert out != None
+    assert len(out.blocks) == 4
+    out.blocks = blocks
+    assert out != None
+    assert len(out.blocks) == 4
+    
+    
