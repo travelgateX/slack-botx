@@ -33,7 +33,7 @@ class Task(Command):
         
         out =  CommandModelOut( response_type='in_channel', replace_original=True )
         out.blocks = blocks
-        self.logger.info(f"out:[{out}]")
+        self.logger.info(f"out json:[{jsonable_encoder(out)}]")
         #response to slack
         #https://api.slack.com/reference/messaging/payload
         response = app.common.util.send_slack_post_model(url = command_in.response_url, data_model = out)

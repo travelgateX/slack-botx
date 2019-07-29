@@ -90,6 +90,7 @@ def send_slack_post_json( url:str, data_json:json)->json:
         return response.json()
     except requests.exceptions.HTTPError as err:
         logger.error(f"Slack post error {err}")
+        logger.error(f"Err text { err.response.text}")
         raise
      
    
