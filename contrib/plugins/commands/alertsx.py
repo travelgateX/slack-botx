@@ -26,19 +26,40 @@ class Task(Command):
 
         #create the response message
         suppliers_alerts_err = []
+        suppliers_alerts_timeout = []
         for edges in response_json['data']['alertsX']['alerts']['edges']:
             for node_edges in edges['node']['alertData']['events']['edges']:
+                alert_code = edges['node']['code']
                 event_data = node_edges['node']['eventData']
                 if event_data['status'] != "OK":
-                    suppliers_alerts_err.append(event_data['groupBy']) 
+                    if alert_code == "ALT_216":
+                        suppliers_alerts_err.append(event_data['groupBy']) 
+                    if alert_code == "ALT_217":
+                        suppliers_alerts_timeout.append(event_data['groupBy']) 
 
-        count_ok = len(suppliers_all) - len(suppliers_alerts_err)
-        count_err = len(suppliers_alerts_err)
+        len_suppliers_all =  len(suppliers_all)
+        len_suppliers_alerts_err =  len(suppliers_alerts_err)
+        len_suppliers_alerts_timeout =  len(suppliers_alerts_timeout)
 
-        blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
+        count_ok = len_suppliers_all - len_suppliers_alerts_err - len_suppliers_alerts_timeout
+        tooltip_err_timeout = tooltip_err_error = ''
+        
+        if len_suppliers_alerts_err > 0:
+            tooltip_err_error = ','.join( suppliers_alerts_err[:max(10,len_suppliers_alerts_err) ]) + "..."
+    
+        if len_suppliers_alerts_timeout > 0:
+            tooltip_err_timeout = ','.join( suppliers_alerts_timeout[:max(10,len_suppliers_alerts_timeout)] ) + "..."
+       
+        blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': count_ok, 
+                                                                                        'count_err_timeout': len_suppliers_alerts_timeout, 
+                                                                                        'count_err_error': len_suppliers_alerts_err,
+                                                                                        'tooltip_err_error': tooltip_err_error, 
+                                                                                        'tooltip_err_timeout': tooltip_err_timeout
+                                                                                        } 
+                                                                    )
         self.logger.info(f"blocks:[{command_in.response_url}][{blocks}]")
         
-        out =  CommandModelOut( response_type='in_channel', replace_original=True )
+        out =  CommandModelOut( response_type='in_channel', replace_original=True, delete_original=True )
         out.blocks = blocks
         #response to slack
         #https://api.slack.com/reference/messaging/payload

@@ -13,16 +13,24 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":green_heart: ${count_ok}"
+			"text": ":green_heart: ${count_ok} suppliers OK"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":heart: ${count_err}"
+			"text": ":yellow_heart: ${count_err_timeout} suppliers with TimeOut ${tooltip_err_timeout}"
 		}
 	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": ":heart: ${count_err_error} suppliers with Errors ${tooltip_err_error}"
+		}
+	},
+	
 	{
 		"type": "context",
 		"elements": [
