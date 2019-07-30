@@ -73,6 +73,7 @@ class Task(Command):
         parser = argparse.ArgumentParser() 
         parser.add_argument("operation")
         valid_operations =['status']
+        args = ''
         try:
             args = self.event_in.text.split()
             args = parser.parse_args( args= args )
