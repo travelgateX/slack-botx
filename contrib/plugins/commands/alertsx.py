@@ -73,8 +73,8 @@ class Task(Command):
         parser = argparse.ArgumentParser() 
         parser.add_argument("operation")
         valid_operations =['status']
-        args = self.event_in.text.split()
         try:
+            args = self.event_in.text.split()
             args = parser.parse_args( args= args )
             if args.operation == 'help':
                raise ValueError("Help requested") 
@@ -82,7 +82,7 @@ class Task(Command):
                 raise ValueError("Not valid operation")    
             else:
                 return None #Not help and valid operation
-        except (ValueError,SystemExit) as e:
+        except (ValueError,SystemExit, Exception) as e:
             self.logger.error(f"Argparse: [{repr(e)}], args[{args}]")
             blocks = await app.common.util.get_message_blocks_payload( ["alertsx_help"] )
             out = CommandModelOut( response_type='in_channel', text_test=self.event_in.text_test )

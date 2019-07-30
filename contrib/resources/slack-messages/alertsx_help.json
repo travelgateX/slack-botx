@@ -3,21 +3,21 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":wave: Need some help with `/alertsx'"
+			"text": ":wave: Need some help with `/alertsx`?"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "List current suppliers status ok, error and timeout\n`/alertsx status'"
+			"text": ">List current suppliers status ok, error and timeout:\n>`/alertsx status`"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "Show this help message:\n`/alertsx help'"
+			"text": ">Show this help message:\n>`/alertsx help`"
 		}
 	}
 ]

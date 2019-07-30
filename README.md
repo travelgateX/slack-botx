@@ -18,6 +18,7 @@
 * Easy to contribute using standard [Plugins Ecosystem](https://packaging.python.org/guides/creating-and-discovering-plugins/)
 * Easy background execution with [Starlette Background Tasks](https://www.starlette.io/background)
 * Complex background execution with [Apache Airflow](https://airflow.apache.org/)
+* Command help with [Python commandline argparse](https://docs.python.org/3/library/argparse.html)
 
 ## Features
 
