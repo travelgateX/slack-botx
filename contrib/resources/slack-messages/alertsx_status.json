@@ -3,7 +3,7 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "Current supplier status"
+			"text": "Current status"
 		}
 	},
 	{
@@ -13,21 +13,21 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":green_heart: ${count_ok} suppliers OK"
+			"text": ":green_heart: ${count_ok} suppliers *OK*"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":yellow_heart: ${count_err_timeout} suppliers with TimeOut ${tooltip_err_timeout}"
+			"text": ":yellow_heart: ${count_err_timeout} suppliers with *TimeOut* ${tooltip_err_timeout}"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":heart: ${count_err_error} suppliers with Errors ${tooltip_err_error}"
+			"text": ":heart: ${count_err_error} suppliers with *Error* ${tooltip_err_error}"
 		}
 	},
 	

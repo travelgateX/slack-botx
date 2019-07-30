@@ -3,24 +3,21 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "Current supplier status"
-		}
-	},
-	{
-		"type": "divider"
-	},
-	{
-		"type": "section",
-		"text": {
-			"type": "mrkdwn",
-			"text": ":green-heart: ${count_ok}"
+			"text": ":wave: Need some help with `/alertsx'"
 		}
 	},
 	{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ":red-heart: ${count_err}"
+			"text": "List current suppliers status ok, error and timeout\n`/alertsx status'"
+		}
+	},
+	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "Show this help message:\n`/alertsx help'"
 		}
 	}
 ]

@@ -32,16 +32,7 @@ class Command(Task):
     async def execute(self): pass
     
     @abstractmethod
-    async def needs_help(self)->bool:pass
+    async def help_payload(self)->CommandModelOut:pass
     
-    async def help_payload(self)->json:
-        blocks = await app.common.util.get_message_payload( ["onboarding"], {'user_real_name': self.event_in.event.user.real_name} )
-        return json.dumps(blocks)
-    
-
 class Event(Task):pass
-      
-class NonImplementedTask(Task):
-    async def execute(self):
-       logger.warning(f"Task non implemented {self.event_in}")
 

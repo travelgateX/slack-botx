@@ -1,10 +1,10 @@
 from app.common.slack_models import BaseModel,CommandModelIn
-from app.tasks.base_tasks import Task, Event,Command,NonImplementedTask
+from app.tasks.base_tasks import Task, Event,Command
 import logging
 import importlib
 import pkgutil
 from app.common.config import Config
-
+from fastapi import HTTPException
 
 import contrib.plugins.commands
 import contrib.plugins.events
@@ -58,11 +58,11 @@ def event_factory(task_name:str, data:BaseModel) -> Event:
         return _create_task_instance(event_plugins["contrib.plugins.events."+task_name], data)
     except KeyError as err:
       logger.error(f"Exception create Event instance[{err}]")
-    return NonImplementedTask(data)
+      raise HTTPException(status_code=404, detail="Event not implemented")
 
 def command_factory(task_name:str, data:CommandModelIn) -> Command:
     try:
         return _create_task_instance(command_plugins["contrib.plugins.commands."+task_name], data)
     except KeyError as err:
         logger.error(f"Exception create Command instance[{err}]")
-    return NonImplementedTask(data)
+        raise HTTPException(status_code=404, detail="Command not implemented")

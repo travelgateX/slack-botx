@@ -23,6 +23,7 @@ class CommandModelIn(BaseModel):
     user_id: str = None
     user_name: str = None
     trigger_id: str = None
+    text_test: str = None
 
 class AttachmentsModel(BaseModel):
    text: List[str]

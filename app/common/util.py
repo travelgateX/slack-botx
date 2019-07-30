@@ -79,16 +79,17 @@ async def format_graphql_query(resource_name:str, substitutions:dict={}):
     #Graphql Query starts with query
     return """{\"query\":\"""" + file_str + """\"}"""
 
-def send_slack_post_model( url:str, data_model:BaseModel)->json:
+def send_slack_post_model( url:str, data_model:BaseModel)->requests.Response:
     return send_slack_post_json(url=url, data_json=jsonable_encoder(data_model, include_none=False))
 
-def send_slack_post_json( url:str, data_json:json)->json:
+def send_slack_post_json( url:str, data_json:json)->requests.Response:
     headers = {"Content-type": "application/json"}
     try:
         logger.debug(f"requests url:[{url}], data:[{data_json}]")
         response = requests.post(url=url, json=data_json, headers=headers)
         response.raise_for_status() 
-        return response.json()
+        logger.debug(f"response { response.text }")
+        return response
     except requests.exceptions.HTTPError as err:
         logger.error(f"Slack post error {err}")
         logger.error(f"Err text { err.response.text}")
