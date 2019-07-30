@@ -24,7 +24,7 @@ class HttpGql:
         headers = {"Content-Type": "application/json",
                    "Authorization": f"Apikey {self.API_KEY}"
                   }
-        logger.info(f"url:{self.URL}, apikey:{self.API_KEY}, query:{query}")
+        logger.info(f"gql query url:[{self.URL}], query:[{query}]")
         response = requests.post(url=self.URL, data=query, headers=headers)
         response.raise_for_status()  
         return response.json()
