@@ -30,7 +30,6 @@
 			"text": ":heart: ${count_err_error} suppliers with *Error* ${tooltip_err_error}"
 		}
 	},
-	
 	{
 		"type": "context",
 		"elements": [

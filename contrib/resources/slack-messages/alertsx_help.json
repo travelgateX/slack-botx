@@ -19,5 +19,15 @@
 			"type": "mrkdwn",
 			"text": ">Show this help message:\n>`/alertsx help`"
 		}
+	},
+	{
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": "<https://github.com/travelgateX/slack-botx|Learn More - Contribute>"
+			}
+		]
 	}
+
 ]
