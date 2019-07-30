@@ -37,10 +37,15 @@ class Text(BaseModel):
    emoji: bool = None
    verbatim: bool =None
 
+class ElementBlock(BaseModel):
+   type: str
+   text: str
+
 class SectionBlock(BaseModel):
    type: str
    text: Text
    block_id: str = None
+   elements: List[ElementBlock] = None
 
 class MessageModelOut(BaseModel):
    text: str = None

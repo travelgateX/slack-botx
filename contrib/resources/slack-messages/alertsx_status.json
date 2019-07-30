@@ -22,5 +22,14 @@
 			"type": "mrkdwn",
 			"text": ":heart: ${count_err}"
 		}
+	},
+	{
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": "Full status at [Supplier Dashboard](https://status-suppliers.travelgatex.com)"
+			}
+		]
 	}
 ]

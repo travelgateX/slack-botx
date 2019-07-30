@@ -32,10 +32,10 @@ async def test_command_model_out_json():
         block_list.append( block )
     out.blocks = block_list
     assert out != None
-    assert len(out.blocks) == 4
+    assert len(out.blocks) == 5
     out.blocks = blocks
     assert out != None
-    assert len(out.blocks) == 4
+    assert len(out.blocks) == 5
     out_json = jsonable_encoder( out, include_none=False)
     print(out_json)
     assert out_json['replace_original'] == True

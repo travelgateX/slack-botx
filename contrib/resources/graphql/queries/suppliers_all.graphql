@@ -1,0 +1,15 @@
+query{
+admin{
+  suppliers{
+    edges{
+      node{
+        code
+        supplierData{
+          code
+          name
+        }
+      }
+    }
+  }
+}
+} 

@@ -10,24 +10,31 @@ class Task(Command):
         command_in : CommandModelIn = self.event_in
         self.logger.info(f"AlertsX.execute[{command_in}]")
         
+        #get all suppliers
+        gql_query = await app.common.util.format_graphql_query( "suppliers_all")
+        response_json = await self.http_gql_client.query(  gql_query )
+        self.logger.info(f"gql_response [{response_json}]")
+        suppliers_all =[]
+        for edges in response_json['data']['admin']['suppliers']['edges']:
+            for supplier_data in edges['node']['supplierData']:
+                suppliers_all.append(supplier_data)
+        
         #get alerts status
         gql_query = await app.common.util.format_graphql_query( "alertsx_status", {'criteria_group':"platform-alerts"})
         response_json = await self.http_gql_client.query(  gql_query )
         self.logger.info(f"gql_response [{response_json}]")
 
         #create the response message
-        count_ok:int = 0
-        count_err:int = 0
-        suppliers_alerts = []
+        suppliers_alerts_err = []
         for edges in response_json['data']['alertsX']['alerts']['edges']:
             for node_edges in edges['node']['alertData']['events']['edges']:
                 event_data = node_edges['node']['eventData']
-                if event_data['status'] == "OK":
-                    count_ok += 1
-                else:
-                    count_err += 1
-                    suppliers_alerts.append(event_data['groupBy']) 
-        
+                if event_data['status'] != "OK":
+                    suppliers_alerts_err.append(event_data['groupBy']) 
+
+        count_ok = len(suppliers_all) - len(suppliers_alerts_err)
+        count_err = len(suppliers_alerts_err)
+
         blocks = await app.common.util.get_message_blocks_payload( ["alertsx_status"], {'count_ok': count_ok, 'count_err': count_err} )
         self.logger.info(f"blocks:[{command_in.response_url}][{blocks}]")
         
