@@ -86,7 +86,7 @@ def send_slack_post_json( url:str, data_json:json)->json:
     headers = {"Content-type": "application/json"}
     try:
         logger.debug(f"requests url:[{url}], data:[{data_json}]")
-        response = requests.post(url=url, data=data_json, headers=headers)
+        response = requests.post(url=url, json=data_json, headers=headers)
         response.raise_for_status() 
         return response.json()
     except requests.exceptions.HTTPError as err:
