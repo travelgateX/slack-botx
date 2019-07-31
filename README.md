@@ -22,12 +22,18 @@
 
 ## Features
 
-* [x] Welcome and onboard new members providing support resources
-* [x] Advise on changelog updates
-* [ ] Interactive commands wrapping [TravelgateX GraphQL API](https://api.travelgatex.com)
-  * [x] Alerts-X
+* Respond to Slack Events API:
+  * [x] team_join:
+    * Welcome and onboard new members providing support resources 
+* Interactive commands wrapping [TravelgateX GraphQL API](https://api.travelgatex.com)
+  * [x] `alertsx`
+    * Status
   * [ ] Insights-X
-* [ ] User answers to __very simple__ support questions (aka Chatbot)
+* Advise on external events
+  * [x] [OnWebChange](https://onwebchange.com)
+    * Advise on changelog updates
+* User answers to __very simple__ questions (aka Chatbot)
+  * [ ] Common support questions
 
 ## Requirements
 
