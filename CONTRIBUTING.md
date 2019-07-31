@@ -21,7 +21,7 @@ You can view an Event sample [here](https://github.com/travelgateX/slack-botx/bl
 1. Ask to your Slack Admin to subscribe the event do you plan to develop. Event must be compatible with Event API as described [here](https://api.slack.com/events)
 1. Under `contrib/plugins/events` create a file named _event name_
 1. Create a class named _Task_ inherit from class _Event_
-1. Hack the _abstract methods_ required
+1. Hack the _abstract methods_
 
 ### Command development
 
@@ -31,7 +31,7 @@ You can view an Command sample [here](https://github.com/travelgateX/slack-botx/
 1. Ask to your Slack Admin to create the new command do you plan to develop as described [here](https://api.slack.com/slash-commands#creating_commands)
 1. Under `contrib/plugins/commands` create a file named _command name_
 1. Create a class named _Task_ inherit from class _Command_
-1. Hack the _abstract methods_ required
+1. Hack the _abstract methods_
 
 [new issue]: https://github.com/travelgateX/slack-botx/issues/new
 [pull request]: https://github.com/travelgateX/slack-botx/compare
