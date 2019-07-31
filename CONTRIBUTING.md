@@ -4,14 +4,14 @@
    not strictly required but it may help reduce the amount of rework you need
    to do later.
 1. Make changes to `app` or contribute with new commands or events:
-   - [Events](event-development)
-   - [Commands](command-development)
+   - [Events](#event-development)
+   - [Commands](#command-development)
 1. Ensure you have added proper tests and documentation.
 1. Open a new [pull request][].
 
 ## Common development tasks
 
-These contributions goes under `contrib` folder using [Python plugins discovery](https://packaging.python.org/guides/creating-and-discovering-plugins/)
+These contributions goes under `contrib` folder using [plugin discovery](https://packaging.python.org/guides/creating-and-discovering-plugins/)
 
 ### Event development
 
