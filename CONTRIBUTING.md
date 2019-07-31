@@ -4,8 +4,8 @@
    not strictly required but it may help reduce the amount of rework you need
    to do later.
 1. Make changes to `app` or contribute with new commands or events:
-   - [Events](event_development)
-   - [Commands](command_development)
+   - [Events](event-development)
+   - [Commands](command-development)
 1. Ensure you have added proper tests and documentation.
 1. Open a new [pull request][].
 
@@ -32,3 +32,6 @@ You can view an Command sample [here](https://github.com/travelgateX/slack-botx/
 1. Under `contrib/plugins/commands` create a file named _command name_
 1. Create a class named _Task_ inherit from class _Command_
 1. Hack the _abstract methods_ required
+
+[new issue]: https://github.com/travelgateX/slack-botx/issues/new
+[pull request]: https://github.com/travelgateX/slack-botx/compare
