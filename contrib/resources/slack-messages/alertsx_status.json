@@ -3,16 +3,6 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "Current status"
-		}
-	},
-	{
-		"type": "divider"
-	},
-	{
-		"type": "section",
-		"text": {
-			"type": "mrkdwn",
 			"text": ":green_heart: ${count_ok} suppliers *OK*"
 		}
 	},

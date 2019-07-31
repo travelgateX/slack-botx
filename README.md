@@ -27,7 +27,7 @@
 * [ ] Interactive commands wrapping [TravelgateX GraphQL API](https://api.travelgatex.com)
   * [x] Alerts-X
   * [ ] Insights-X
-* [ ] User answers to __very simple__ support questions
+* [ ] User answers to __very simple__ support questions (aka Chatbot)
 
 ## Requirements
 
@@ -86,18 +86,8 @@ pytest
 
 ## Cloud deployment
 
-### Heroku
+* [Heroku deployment url](https://slack-botx.herokuapp.com/)
 
-Heroku [deployment url](https://slack-botx.herokuapp.com/)
+## Contributing
 
-## How to contribute
-
-### As core maintainer
-
-### As plugin developer
-
-- By modulen name
-Command:
-
-- Create json slack block help
-- Imeplemtn command name
+Refer to [CONTRIBUTING.md](https://github.com/travelgateX/slack-botx/blob/master/CONTRIBUTING.md)
