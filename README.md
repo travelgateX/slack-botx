@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 ### Environment
 
-Modify app/config.ini or set environment variables:
+Modify app/config.ini and/or set environment variables:
 
 * Linux
 

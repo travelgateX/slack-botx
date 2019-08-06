@@ -9,8 +9,10 @@ from fastapi import Depends, FastAPI, Header, HTTPException
 
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+from starlette.applications import Starlette
 
-from app.routers import (slack_events, onwebchange_webhooks,slack_commands)
+from app.routers import (slack_events, onwebchange_webhooks,slack_commands, prometheus)
+from app.middleware.prometheus import PrometheusMiddleware
 from app.common.util import validate_slack_signature, validate_github_signature
 from app.common.config import Config
 
@@ -49,7 +51,16 @@ async def is_valid_slack_signature(request: Request):
       logger.error("Bad request signature")
       raise HTTPException( status_code=403, detail="Bad request signature")
     
+
 app = FastAPI()
+
+#starlette metrics
+app.add_middleware(PrometheusMiddleware)
+
+app.include_router(
+   prometheus.router,
+   tags=["prometheus","metrics"]
+)
 
 app.include_router(
    slack_events.router,

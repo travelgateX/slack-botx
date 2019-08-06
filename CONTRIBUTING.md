@@ -2,8 +2,8 @@
 
 There are 2 ways to contribute:
 
-- As core maintainer: Fixing or developing new features on `app` folder
-- The easy one: Developing reactions to [Slack Events](#event-development) or [Slack Commands](#command-development)
+- **As core maintainer**: Fixing or developing new features on `app` folder
+- **Plugin contributor**: Developing reactions to [Slack Events](#event-development) or [Slack Commands](#command-development)
 
 In both cases, the workflow to contribute is the same:
 
