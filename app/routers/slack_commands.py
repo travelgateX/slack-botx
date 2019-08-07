@@ -7,6 +7,7 @@ from app.common.models import EventModelOut
 from app.common.slack_models import CommandModelIn, CommandModelOut
 from app.tasks.factory import Macro,command_factory
 from app.tasks.base_tasks import Task,Command
+from app.common.prometheus import TASKS_REQUESTS
 
 Config.init_config()
 logger = logging.getLogger(__name__)
@@ -23,6 +24,9 @@ async def post_event(*, command: str = Form(...), response_url: str = Form(...),
    command_name = command_model.command[1:]
    command:Command = command_factory(command_name, command_model)
    
+   #Prometheus metric
+   TASKS_REQUESTS.labels(type="command", name=command_name).inc()
+
    #Check if commands need help and response immediately
    ret:CommandModelOut = await command.help_payload()
    if ret is None:
