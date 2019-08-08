@@ -18,12 +18,15 @@ router = APIRouter()
 async def post_event(event:EventModelIn, background_tasks: BackgroundTasks):
    logger.info(f"POST event:[{event.type}]")
    
-   #Prometheus metric
-   TASKS_REQUESTS.labels(type="event", name=event.type).inc()
-
+   
    if event.type == "url_verification": 
+      #Prometheus metric
+      TASKS_REQUESTS.labels(type="event", name=event.type).inc()
       return ChallengeModelOut(**event.dict())
    else:  #Other events are executed in background 
+     #Prometheus metric
+     TASKS_REQUESTS.labels(type="event", name=event.event.type).inc()
+
      macro = Macro()
      macro.add(  event_factory(event.event.type, event) )
      background_tasks.add_task( macro.run )
