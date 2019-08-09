@@ -22,8 +22,8 @@ deploy:
   file_glob: true
   body: New releaseo
   file: 
-    - app/**/*
-    - contrib/**/*
+    - app/*.py
+    - contrib/*.py
   on:
     repo: travelgateX/slack-botx
   skip_cleanup: true
