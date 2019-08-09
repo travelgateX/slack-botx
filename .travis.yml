@@ -33,5 +33,3 @@ deploy:
     - app/*
     - contrib/*
   skip_cleanup: true
-  on:
-    tags: true
