@@ -26,7 +26,7 @@ before_deploy:
       - git tag $TRAVIS_TAG
 
 deploy:
-  prvovider: releases
+  provider: releases
   api_key: $GITHUB_ACCESS_TOKEN
   file_glob: true
   file: 
