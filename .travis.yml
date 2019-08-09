@@ -30,6 +30,6 @@ deploy:
   api_key: $GITHUB_ACCESS_TOKEN
   file_glob: true
   file: 
-    - app/*
-    - contrib/*
+    - app/*.{py,ini}
+    - contrib/*.{py,json,graphql}
   skip_cleanup: true
