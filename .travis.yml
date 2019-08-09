@@ -1,36 +1,22 @@
-dist: xenial # required for Python >= 3.7
-
+dist: xenial
 language: python
-
 python:
-  - "3.7"
-  - "3.7-dev"  # 3.7 development branch
-  
+- '3.7'
+- 3.7-dev
 install:
-  - pip install -r requirements.txt
-  - pip install codecov pytest-cov # Install the codecov pip dependency
-
-# Run the unit test
+- pip install -r requirements.txt
+- pip install codecov pytest-cov
 script:
-  - pytest  --cov-report term --cov=app
-
-# Push the results back to codecov
+- pytest  --cov-report term --cov=app
 after_success:
-  - codecov
-
-before_deploy:
-      # Set up git user name and tag this commit
-      - git config --local user.name operezfuentes
-      - git config --local user.email oscar@xmltravelgate.com
-      - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-      - git tag $TRAVIS_TAG
-
+- codecov
 deploy:
   provider: releases
-  api_key: 
-    secure: $GITHUB_ACCESS_TOKEN
+  api_key:
+    secure: p0qQNxquXiRNjAEFvJKGvzSCrf0RMJ60Plc71e5Rc3tJZXcQgFJHq7seXxZG8HpGjn0QDB+F5UAYP1S5gx//PerlM8NHedUF6zoozoGHyRmXIVpsfvtomiygi+0tHDxNprF9MDPKGm4gjxHsijuk74oYAQo3EOIvK+jlfgrB03CLIYbZVsVQr9ic4T8h89QqAftsSR3KUDqT80rXWKYGb1KQL4phHNQ3fRV669KbveNoVvBTnpRfCUWPwKtec81R6p00Vp0H8xyV1GYg1gGuTAEKLRVmhg/eZ4Z/xrAa1CgXtsNfktJSvKZNTpNGsCVvGwupGHC+rbU1a8Fke9iSotQSsYF5Tqlyr7F97O0i+U3YAjC5RaFFCn1q45xqHkc9EXgvS65zUgc4FTeAzlEm4RHXFAiSqLmQftK7JSNnigCRmdfpbS7jtCX196omJKympseeKA8AiXhpe2NNsHVVNcce+mUFY3GPlhN0GNbe42YSa5NW5wtvZrnjWf2MOVq33LPIHTVQ4+ZQTcsKHF9Xwjg/Kn5XNy0mC5ujLASg/kvOyuOcHcod1oj/J9MnNmnexKIZI6j3Iu9JW1F73Xb2UQhIOfTtLjInBvDl9+sWlDrlLux73FdHdN7m2ziUqGK3fLF5Fmf8fB0ViiGm18HhHW5zXfhIbV39NVbKsYxT6sE=
   file_glob: true
   file: 
-    - app/*.{py,ini}
-    - contrib/*.{py,json,graphql}
-  skip_cleanup: true
+    - app/**/.*{py,ini}
+    - contrib/**/*.{py,json,graphql}
+  on:
+    repo: travelgateX/slack-botx
