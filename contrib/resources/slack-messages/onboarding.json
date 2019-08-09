@@ -24,7 +24,7 @@
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": ">Useful for slack users: \n>• *<#CLFB16G5R|alerts>*: Suppliers and product alerts notifications\n>• *<#CH3855V6U|announcements>*: Releases and updates\n>• *<#CLLD9S9SA|deployments>*: Platform deployments\n>• *`alertsx`*: Command for amazing *Alerts-X* queries"
+			"text": ">Useful for slack users: \n>• *<#CLFB16G5R|alerts>*: TravelgateX product alerts notifications \n>• *<#CM9DVAPRC|alerts-suppliers>*: 3rd party Suppliers alerts notifications\n>• *<#CH3855V6U|announcements>*: Releases and updates\n>• *<#CLLD9S9SA|deployments>*: Platform deployments\n>• *`alertsx`*: Command for amazing *Alerts-X* queries"
 		}
 	},
 	{
