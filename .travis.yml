@@ -28,4 +28,10 @@ before_deploy:
 deploy:
   prvovider: releases
   api_key: $GITHUB_ACCESS_TOKEN
+  file_glob: true
+  file: 
+    - app/*
+    - contrib/*
   skip_cleanup: true
+  on:
+    tags: true
