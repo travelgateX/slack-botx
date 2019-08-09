@@ -17,3 +17,15 @@ script:
 # Push the results back to codecov
 after_success:
   - codecov
+
+before_deploy:
+      # Set up git user name and tag this commit
+      - git config --local user.name operezfuentes
+      - git config --local user.email oscar@xmltravelgate.com
+      - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+      - git tag $TRAVIS_TAG
+
+deploy:
+  prvovider: releases
+  api_key: $GITHUB_ACCESS_TOKEN
+  skip_cleanup: true
