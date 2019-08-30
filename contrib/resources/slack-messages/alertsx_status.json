@@ -25,7 +25,7 @@
 		"elements": [
 			{
 				"type": "mrkdwn",
-				"text": "Status history at <https://status-suppliers.travelgatex.com|Supplier Dashboard>"
+				"text": "Status history at <https://status.travelgatex.com/suppliers|Supplier Dashboard>"
 			}
 		]
 	}
