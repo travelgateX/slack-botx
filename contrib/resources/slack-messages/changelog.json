@@ -12,5 +12,14 @@
 			"type": "mrkdwn",
 			"text": "You can read the full release notes *<${url}|here>*. \nLet us know if you have any questions, we're looking forward to your feedback :raised_hands:"
 		}
+	},
+	{
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": "External announcements at *<#CMXC6JNG7|announcements-external>*"
+			}
+		]
 	}
 ]
