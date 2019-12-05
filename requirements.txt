@@ -1,5 +1,5 @@
-slackclient==2.1.0
-fastapi[all]==0.38.1
+slackclient==2.4.0
+fastapi[all]==0.44.1
 aiofiles==0.4.0
 prometheus_client==0.7.1
 pytest
